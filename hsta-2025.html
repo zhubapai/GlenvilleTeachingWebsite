@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HSTA Summer 2025 — Pai Song</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav-wrap">
+    <a class="brand" href="index.html">Pai Song</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="#">Research</a>
+      <a href="hsta.html" class="active">Outreach</a>
+      <a href="#contact" class="nav-cta">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <a class="back-link" href="hsta.html">&larr; HSTA Summer Camp</a>
+
+  <section class="intro">
+    <p class="hero-eyebrow">HSTA Summer Camp</p>
+    <h1>Summer 2025</h1>
+    <p>Mathematics sessions taught as part of the HSTA Summer Camp at Glenville State University.
+       Topics focus on applied mathematics connecting algebraic reasoning to real-world data.</p>
+  </section>
+
+  <!-- MATH TOPICS -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Math Topics &amp; Notes</h2>
+      <span class="term-badge">GoodNotes</span>
+    </div>
+    <div class="topic-cards">
+
+      <div class="topic-card">
+        <div class="topic-icon">🌡</div>
+        <div class="topic-body">
+          <h3>Newton's Law of Cooling</h3>
+          <p>Exploring exponential decay through temperature change — connecting differential
+             equations to real-world cooling data.</p>
+          <a class="topic-link" href="https://share.goodnotes.com/s/3gFw9gYtZvs8Fldaj2AaH8"
+             target="_blank" rel="noopener">
+            Open in GoodNotes ↗
+          </a>
+
+          <!-- CALCULATORS -->
+          <div class="calc-row">
+
+            <!-- Cooling Constant Calculator -->
+            <div class="calc-card">
+              <h4 class="calc-title">🧮 Cooling Constant Calculator</h4>
+              <p class="calc-desc">Find <em>k</em> from two temperature readings.</p>
+              <div class="calc-fields">
+                <label>Initial Temp T₀ <input type="number" id="cc-t0" value="100"></label>
+                <label>Final Temp T₁ <input type="number" id="cc-t1" value="80"></label>
+                <label>Ambient Temp Tₛ <input type="number" id="cc-ts" value="20"></label>
+                <label>Initial Time t₀ <input type="number" id="cc-i0" value="0"></label>
+                <label>Final Time t₁ <input type="number" id="cc-i1" value="10"></label>
+              </div>
+              <button class="calc-btn" onclick="calcCoolingConstant()">Calculate k</button>
+              <p class="calc-result" id="cc-result"></p>
+            </div>
+
+            <!-- Newton's Law of Cooling Calculator -->
+            <div class="calc-card">
+              <h4 class="calc-title">⏱ Cooling Time Calculator</h4>
+              <p class="calc-desc">Find time to reach a target temperature.</p>
+              <div class="calc-fields">
+                <label>Initial Temp T₀ <input type="number" id="ct-t0" value="100"></label>
+                <label>Target Temp T(t) <input type="number" id="ct-tt" value="30"></label>
+                <label>Ambient Temp Tₛ <input type="number" id="ct-ts" value="25"></label>
+                <label>Cooling Constant k <input type="number" id="ct-k" value="0.01" step="0.001"></label>
+              </div>
+              <button class="calc-btn" onclick="calcCoolingTime()">Calculate Time</button>
+              <p class="calc-result" id="ct-result"></p>
+            </div>
+
+          </div><!-- end calc-row -->
+        </div>
+      </div>
+
+      <script>
+      function calcCoolingConstant() {
+        var t0 = parseFloat(document.getElementById("cc-t0").value);
+        var t1 = parseFloat(document.getElementById("cc-t1").value);
+        var ts = parseFloat(document.getElementById("cc-ts").value);
+        var i0 = parseFloat(document.getElementById("cc-i0").value);
+        var i1 = parseFloat(document.getElementById("cc-i1").value);
+        if (isNaN(t0)||isNaN(t1)||isNaN(ts)||isNaN(i0)||isNaN(i1)||i1===i0) {
+          document.getElementById("cc-result").textContent = "Please fill in all fields.";
+          return;
+        }
+        var k = Math.log((t1 - ts) / (t0 - ts)) / (i1 - i0);
+        document.getElementById("cc-result").textContent =
+          "k = " + k.toFixed(6);
+      }
+
+      function calcCoolingTime() {
+        var t0 = parseFloat(document.getElementById("ct-t0").value);
+        var tt = parseFloat(document.getElementById("ct-tt").value);
+        var ts = parseFloat(document.getElementById("ct-ts").value);
+        var k  = parseFloat(document.getElementById("ct-k").value);
+        if (isNaN(t0)||isNaN(tt)||isNaN(ts)||isNaN(k)||k===0) {
+          document.getElementById("ct-result").textContent = "Please fill in all fields.";
+          return;
+        }
+        var t = Math.log((tt - ts) / (t0 - ts)) / (-k);
+        document.getElementById("ct-result").textContent =
+          "Time to reach " + tt + "° = " + t.toFixed(4) + " units";
+      }
+      </script>
+
+      <div class="topic-card">
+        <div class="topic-icon">📈</div>
+        <div class="topic-body">
+          <h3>Lengthy Relationships</h3>
+          <p>An introduction to correlation and linear regression — using data to find and
+             interpret relationships between variables.</p>
+          <a class="topic-link" href="https://share.goodnotes.com/s/JWSqeozYuE3Bn3cti7sLim"
+             target="_blank" rel="noopener">
+            Open in GoodNotes ↗
+          </a>
+          <a class="resource-link" href="https://www.statdisk.com/" target="_blank" rel="noopener">
+            Correlation &amp; Regression Calculator (StatDisk) ↗
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- VIDEO EDITING -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Video Editing Resources</h2>
+    </div>
+    <p class="section-note">Resources used for the video production component of camp activities.</p>
+
+    <div class="resource-group">
+      <h3 class="resource-group-title">iMovie</h3>
+      <div class="resource-list">
+        <a class="resource-item" href="https://support.apple.com/guide/imovie-iphone/welcome/ios" target="_blank" rel="noopener">
+          <span class="resource-platform">iPhone</span>
+          <span>iMovie User Guide for iPhone <span class="official-badge">Official</span></span>
+          <span class="arrow">↗</span>
+        </a>
+        <a class="resource-item" href="https://www.youtube.com/watch?v=eBI4_k9-u5Q" target="_blank" rel="noopener">
+          <span class="resource-platform">iPhone</span>
+          <span>How to Use iMovie on iPhone <span class="yt-badge">YouTube</span></span>
+          <span class="arrow">↗</span>
+        </a>
+        <a class="resource-item" href="https://support.apple.com/guide/imovie-ipad/welcome/ipados" target="_blank" rel="noopener">
+          <span class="resource-platform">iPad</span>
+          <span>iMovie User Guide for iPad <span class="official-badge">Official</span></span>
+          <span class="arrow">↗</span>
+        </a>
+        <a class="resource-item" href="https://www.youtube.com/watch?v=e3-9o4Yxx-U" target="_blank" rel="noopener">
+          <span class="resource-platform">iPad</span>
+          <span>How to Use iMovie on iPad <span class="yt-badge">YouTube</span></span>
+          <span class="arrow">↗</span>
+        </a>
+        <a class="resource-item" href="https://support.apple.com/guide/imovie/welcome/mac" target="_blank" rel="noopener">
+          <span class="resource-platform">Mac</span>
+          <span>iMovie User Guide for Mac <span class="official-badge">Official</span></span>
+          <span class="arrow">↗</span>
+        </a>
+        <a class="resource-item" href="https://www.youtube.com/watch?v=5xsIH_7q6OQ" target="_blank" rel="noopener">
+          <span class="resource-platform">Mac</span>
+          <span>How to Use iMovie <span class="yt-badge">YouTube</span></span>
+          <span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="resource-group">
+      <h3 class="resource-group-title">Android &amp; Windows Alternatives</h3>
+      <div class="resource-list">
+        <a class="resource-item" href="https://www.youtube.com/watch?v=YVAxyfJz7jw" target="_blank" rel="noopener">
+          <span class="resource-platform">Android</span>
+          <span>PowerDirector — Beginner's Guide <span class="yt-badge">YouTube</span></span>
+          <span class="arrow">↗</span>
+        </a>
+        <a class="resource-item" href="https://www.youtube.com/@Kinemaster" target="_blank" rel="noopener">
+          <span class="resource-platform">Android</span>
+          <span>KineMaster Official Channel <span class="yt-badge">YouTube</span></span>
+          <span class="arrow">↗</span>
+        </a>
+        <a class="resource-item" href="https://www.movavi.com/" target="_blank" rel="noopener">
+          <span class="resource-platform">Win/Mac</span>
+          <span>Movavi Video Editor</span>
+          <span class="arrow">↗</span>
+        </a>
+        <a class="resource-item" href="https://gopro.com/en/us/shop/quik-app-video-photo-editor" target="_blank" rel="noopener">
+          <span class="resource-platform">iOS/Android</span>
+          <span>Quik by GoPro</span>
+          <span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="resource-group">
+      <h3 class="resource-group-title">Sample Clips</h3>
+      <div class="resource-list">
+        <a class="resource-item" href="https://drive.google.com/drive/folders/13bvtwAGAAx2_DchtTP77XVo9jbTK-3a7" target="_blank" rel="noopener">
+          <span class="resource-platform">Drive</span>
+          <span>Clips for Class Activity <span class="optional-badge">Optional</span></span>
+          <span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="year-nav">
+    <a href="hsta-2024.html">&larr; Summer 2024</a>
+    <a href="hsta-2026.html">Summer 2026 &rarr;</a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap footer-wrap">
+    <span>© 2026 Pai Song</span>
+    <span>Glenville State University · Department of Mathematics</span>
+  </div>
+</footer>
+
+</body>
+</html>
