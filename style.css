@@ -550,6 +550,16 @@ footer {
   border-radius: 4px;
   margin-left: 4px;
 }
+.pdf-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
 
 /* year nav */
 .year-nav {

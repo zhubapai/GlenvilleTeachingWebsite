@@ -90,6 +90,37 @@
         </div>
       </div>
 
+      <script>
+      function calcCoolingConstant() {
+        var t0 = parseFloat(document.getElementById("cc-t0").value);
+        var t1 = parseFloat(document.getElementById("cc-t1").value);
+        var ts = parseFloat(document.getElementById("cc-ts").value);
+        var i0 = parseFloat(document.getElementById("cc-i0").value);
+        var i1 = parseFloat(document.getElementById("cc-i1").value);
+        if (isNaN(t0)||isNaN(t1)||isNaN(ts)||isNaN(i0)||isNaN(i1)||i1===i0) {
+          document.getElementById("cc-result").textContent = "Please fill in all fields.";
+          return;
+        }
+        var k = Math.log((t1 - ts) / (t0 - ts)) / (i1 - i0);
+        document.getElementById("cc-result").textContent =
+          "k = " + k.toFixed(6);
+      }
+
+      function calcCoolingTime() {
+        var t0 = parseFloat(document.getElementById("ct-t0").value);
+        var tt = parseFloat(document.getElementById("ct-tt").value);
+        var ts = parseFloat(document.getElementById("ct-ts").value);
+        var k  = parseFloat(document.getElementById("ct-k").value);
+        if (isNaN(t0)||isNaN(tt)||isNaN(ts)||isNaN(k)||k===0) {
+          document.getElementById("ct-result").textContent = "Please fill in all fields.";
+          return;
+        }
+        var t = Math.log((tt - ts) / (t0 - ts)) / (-k);
+        document.getElementById("ct-result").textContent =
+          "Time to reach " + tt + "° = " + t.toFixed(4) + " units";
+      }
+      </script>
+
       <div class="topic-card">
         <div class="topic-icon">📈</div>
         <div class="topic-body">
@@ -110,6 +141,27 @@
     </div>
   </section>
 
+  <!-- VIDEO PROJECT TOPIC -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Video Editing Project</h2>
+      <span class="term-badge">Camp Activity</span>
+    </div>
+    <div class="topic-cards">
+      <div class="topic-card">
+        <div class="topic-icon">🎬</div>
+        <div class="topic-body">
+          <h3>Capture &amp; Edit</h3>
+          <p>Turn your recorded clips — from your math activity or storyline — into a short,
+             polished video using iMovie. Plan your shots first, then film, edit, and export.</p>
+          <a class="topic-link" href="iMovie-Handout-2026.pdf" target="_blank" rel="noopener">
+            iMovie Basics: Quick Start Guide ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- VIDEO EDITING -->
   <section class="section">
     <div class="section-header">
@@ -120,6 +172,11 @@
     <div class="resource-group">
       <h3 class="resource-group-title">iMovie</h3>
       <div class="resource-list">
+        <a class="resource-item" href="iMovie-Handout-2026.pdf" target="_blank" rel="noopener">
+          <span class="resource-platform">Handout</span>
+          <span>iMovie Basics: Quick Start Guide <span class="pdf-badge">PDF</span></span>
+          <span class="arrow">↗</span>
+        </a>
         <a class="resource-item" href="https://support.apple.com/guide/imovie-iphone/welcome/ios" target="_blank" rel="noopener">
           <span class="resource-platform">iPhone</span>
           <span>iMovie User Guide for iPhone <span class="official-badge">Official</span></span>
@@ -174,6 +231,43 @@
         <a class="resource-item" href="https://gopro.com/en/us/shop/quik-app-video-photo-editor" target="_blank" rel="noopener">
           <span class="resource-platform">iOS/Android</span>
           <span>Quik by GoPro</span>
+          <span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="resource-group">
+      <h3 class="resource-group-title">Royalty-Free Music &amp; Sound Effects</h3>
+      <div class="resource-list">
+        <a class="resource-item" href="https://www.youtube.com/audiolibrary" target="_blank" rel="noopener">
+          <span class="resource-platform">Web</span>
+          <span>YouTube Audio Library <span class="official-badge">Official</span></span>
+          <span class="arrow">↗</span>
+        </a>
+        <a class="resource-item" href="https://pixabay.com/music/" target="_blank" rel="noopener">
+          <span class="resource-platform">Web</span>
+          <span>Pixabay Music — free, no attribution required</span>
+          <span class="arrow">↗</span>
+        </a>
+        <a class="resource-item" href="https://freesound.org/" target="_blank" rel="noopener">
+          <span class="resource-platform">Web</span>
+          <span>Freesound — sound effects library</span>
+          <span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="resource-group">
+      <h3 class="resource-group-title">Stock Video &amp; Photos</h3>
+      <div class="resource-list">
+        <a class="resource-item" href="https://www.pexels.com/videos/" target="_blank" rel="noopener">
+          <span class="resource-platform">Web</span>
+          <span>Pexels — free stock video &amp; photos</span>
+          <span class="arrow">↗</span>
+        </a>
+        <a class="resource-item" href="https://pixabay.com/videos/" target="_blank" rel="noopener">
+          <span class="resource-platform">Web</span>
+          <span>Pixabay — free stock video &amp; photos</span>
           <span class="arrow">↗</span>
         </a>
       </div>
