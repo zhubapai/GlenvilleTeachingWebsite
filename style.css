@@ -553,6 +553,8 @@ details.resource-group .resource-list { margin-top: 10px; }
   transition: background 0.12s, border-color 0.12s;
 }
 .resource-item:hover { background: var(--accent-soft); border-color: var(--accent); text-decoration: none; }
+.resource-item.static { cursor: default; color: var(--ink-soft); }
+.resource-item.static:hover { background: var(--paper-raised); border-color: var(--line); }
 .resource-platform {
   font-size: 0.68rem;
   font-weight: 700;
