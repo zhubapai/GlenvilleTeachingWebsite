@@ -15,11 +15,34 @@
 <link rel="shortcut icon" href="assets/favicon.ico">
 <style>
 /* ── Pioneer Calc ── */
-.calc-page {
-  max-width: 1080px; margin: 0 auto; padding: 36px 28px 64px;
-  display: grid; grid-template-columns: minmax(300px, 410px) 1fr; gap: 44px; align-items: start;
+.calc-page { max-width: 1000px; margin: 0 auto; padding: 32px 28px 64px; }
+.calc-head { max-width: 760px; margin-bottom: 22px; }
+.calc-head .eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.calc-head h1 { font-size: 2.1rem; letter-spacing: -.01em; }
+.calc-head .lede { color: var(--ink-soft); margin-top: 10px; }
+.calc-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+.calc-cap { font: 600 .95rem 'Inter', sans-serif; color: var(--ink); text-align: center; margin-bottom: 10px; }
+.calc-cap span { display: block; font-weight: 500; font-size: .76rem; color: var(--ink-muted); }
+.switch-label { display: none; font: 600 .82rem 'Inter', sans-serif; color: var(--ink-soft); text-align: center; margin-bottom: 6px; }
+.calc.is-active { box-shadow: 0 0 0 3px var(--gold), 0 24px 48px -18px rgba(20,30,55,.55); }
+.calc-info { margin-top: 40px; }
+.ref-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; align-items: start; }
+/* wide screens: both calculators side by side, no switch */
+@media (min-width: 881px) {
+  .model-switch, .switch-label { display: none !important; }
+  #calc[hidden], #calc30[hidden] { display: block; }
+  body .only84, body .only30 { display: block !important; }
 }
-@media (max-width: 880px) { .calc-page { grid-template-columns: 1fr; padding: 20px 16px 48px; gap: 28px; } }
+/* phones and narrow windows: one calculator at a time, with the switch */
+@media (max-width: 880px) {
+  .calc-page { padding: 20px 16px 48px; }
+  .calc-pair { grid-template-columns: 1fr; gap: 0; }
+  .calc-cap { display: none; }
+  .calc-col:has(> .calc[hidden]) { display: none; }
+  .switch-label { display: block; }
+  .ref-grid { grid-template-columns: 1fr; }
+  .calc.is-active { box-shadow: 0 1px 0 rgba(255,255,255,.08) inset, 0 24px 48px -18px rgba(20,30,55,.55); }
+}
 
 .calc {
   --body: #1b2843; --body-2: #15203a; --key-fn: #2c3d60; --key-fn-2: #24334f;
@@ -60,7 +83,7 @@
 .lcd-row { height: 1.17em; white-space: nowrap; overflow: hidden; }
 .c { display: inline-block; width: .6em; text-align: center; vertical-align: top; height: 1.17em; }
 .c.i { background: var(--lcd-ink); color: var(--lcd); }
-.c.k { animation: blink 1.06s steps(1) infinite; }
+.c.cb { animation: blink 1.06s steps(1) infinite; }
 .c.ks { background: var(--lcd-ink); color: var(--lcd); font-size: .82em; font-weight: 700; }
 @keyframes blink { 0% { background: var(--lcd-ink); color: var(--lcd); } 50% { background: transparent; color: inherit; } }
 .lcd canvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: none; }
@@ -109,6 +132,40 @@
   .lab { font-size: 7.5px; } .pad { column-gap: 5px; }
 }
 
+/* model switch */
+.model-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; max-width: 410px; margin: 0 auto 16px; padding: 5px; background: var(--paper-raised); border: 2px solid var(--accent); border-radius: 14px; box-shadow: 0 4px 14px -6px rgba(20,30,55,.35); }
+.model-switch button { font: 600 .84rem 'Inter', sans-serif; color: var(--ink-soft); background: transparent; border: 0; border-radius: 10px; padding: 8px 6px 7px; cursor: pointer; line-height: 1.25; }
+.model-switch button small { display: block; font-weight: 500; font-size: .7rem; color: var(--ink-muted); }
+.model-switch button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.model-switch button[aria-pressed="true"] small { color: #c9d6ee; }
+.model-switch button:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+body[data-model="30"] .only84, body:not([data-model="30"]) .only30 { display: none; }
+
+/* TI-30XS style */
+.calc30 { --body: #213a63; --body-2: #1a2f52; --key-fn: #2f4b78; --key-fn-2: #29426a; --key-op: #4d6aa0; }
+.scr30 { font-size: calc(100cqw / 16 / 0.6); line-height: 1.25; height: 5em; overflow: hidden; position: relative; }
+.scr30 .g30 .lcd-row, .scr30 .g30 .c { height: 1.25em; line-height: 1.25em; }
+.l30 { min-height: 1.25em; white-space: nowrap; }
+.l30.r { text-align: right; }
+.l30.hdr, .l30.note { font-size: .62em; color: var(--lcd-dim); }
+.l30 .sel { background: var(--lcd-ink); color: var(--lcd); }
+.fr { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: .7em; line-height: 1.12; margin: 0 .07em; }
+.fr .n { border-bottom: .1em solid currentColor; padding: 0 .12em .02em; }
+.fr .d { padding: .02em .12em 0; }
+.sp { font-size: .62em; vertical-align: .62em; line-height: 1; }
+.sq { display: inline-flex; align-items: flex-start; }
+.sq .rs { padding-top: .05em; }
+.sq .rad { border-top: .07em solid currentColor; padding: 0 .08em 0 .04em; margin-top: .08em; }
+.ri { font-size: .5em; vertical-align: .95em; margin-right: -.3em; }
+.slot { display: inline-block; width: .42em; height: .78em; border: .06em dashed currentColor; vertical-align: middle; opacity: .5; margin: 0 .03em; }
+.cur30 { display: inline-block; width: .5em; height: .95em; vertical-align: middle; background: var(--lcd-ink); animation: blink30 1.06s steps(1) infinite; }
+.cur30.s2 { animation: none; position: relative; }
+.cur30.s2::after { content: '↑'; position: absolute; inset: 0; color: var(--lcd); font-size: .7em; text-align: center; line-height: 1.35; font-weight: 700; }
+@keyframes blink30 { 0% { opacity: 1; } 50% { opacity: 0; } }
+.pad30 .k button { text-transform: none; }
+.k.tiny button { font-size: 9.5px; letter-spacing: -.02em; }
+.pad30 .lab { justify-content: flex-start; }
+
 /* side panel */
 .calc-info h1 { font-size: 2.1rem; letter-spacing: -.01em; }
 .calc-info .eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
@@ -146,27 +203,53 @@
 </header>
 
 <main class="calc-page">
-  <section aria-label="Calculator">
-    <div class="calc" id="calc">
-      <div class="calc-brand"><b>PIONEER CALC</b><span>Glenville State · Math</span></div>
-      <div class="bezel">
-        <div class="lcd" id="lcd" tabindex="0" aria-label="Calculator screen. Type with your keyboard or use the keys below." role="application">
-          <div class="lcd-status"><span id="st-mode">NORMAL FLOAT RADIAN</span><span class="ind" id="st-ind"></span></div>
-          <div class="lcd-rows" id="rows"></div>
-          <canvas id="plot"></canvas>
+  <header class="calc-head">
+    <p class="eyebrow">Student Tools</p>
+    <h1>Pioneer Calc</h1>
+    <p class="lede">Two free calculators that work like the ones students use: a <b>TI-84 Plus CE</b> (graphing and statistics) and a <b>TI-30XS MultiView</b> (scientific, with stacked fractions). Same keys, same menus, same answers, on a laptop or a phone.</p>
+  </header>
+
+  <section class="calc-stage" aria-label="Calculators">
+    <p class="switch-label">Choose a calculator:</p>
+    <div class="model-switch" role="group" aria-label="Calculator model">
+      <button type="button" data-model="84" aria-pressed="true">TI-84 Plus CE style<small>graphing · stats</small></button>
+      <button type="button" data-model="30" aria-pressed="false">TI-30XS MultiView style<small>scientific · fractions</small></button>
+    </div>
+    <div class="calc-pair">
+      <div class="calc-col">
+        <p class="calc-cap">TI-84 Plus CE style <span>graphing · stats</span></p>
+      <div class="calc" id="calc">
+        <div class="calc-brand"><b>PIONEER CALC</b><span>Glenville State · Math</span></div>
+        <div class="bezel">
+          <div class="lcd" id="lcd" tabindex="0" aria-label="Calculator screen. Type with your keyboard or use the keys below." role="application">
+            <div class="lcd-status"><span id="st-mode">NORMAL FLOAT RADIAN</span><span class="ind" id="st-ind"></span></div>
+            <div class="lcd-rows" id="rows"></div>
+            <canvas id="plot"></canvas>
+          </div>
         </div>
+        <div class="pad" id="pad"></div>
       </div>
-      <div class="pad" id="pad"></div>
+      </div>
+      <div class="calc-col">
+        <p class="calc-cap">TI-30XS MultiView style <span>scientific · fractions</span></p>
+      <div class="calc calc30" id="calc30" hidden>
+        <div class="calc-brand"><b>PIONEER CALC 30</b><span>MultiView style</span></div>
+        <div class="bezel">
+          <div class="lcd lcd30" id="lcd30" tabindex="0" aria-label="Scientific calculator screen. Type with your keyboard or use the keys below." role="application">
+            <div class="lcd-status"><span id="st30">DEG</span><span class="ind" id="ind30"></span></div>
+            <div class="scr30" id="scr30"></div>
+          </div>
+        </div>
+        <div class="pad pad30" id="pad30"></div>
+      </div>
+      </div>
     </div>
   </section>
 
   <section class="calc-info">
-    <p class="eyebrow">Student Tool</p>
-    <h1>Pioneer Calc</h1>
-    <p class="lede">A free calculator that works like a TI-84 Plus CE: same keys, same menus, same answers. Use it to practice the keystrokes for any of my courses, on a laptop or a phone.</p>
-
-    <div class="ref">
-      <h2>Where to find it</h2>
+    <div class="ref-grid">
+    <div class="ref only84">
+      <h2>TI-84 style: where to find it</h2>
       <table>
         <tr><td>Normal probability</td><td><span class="kbd k2">2nd</span> <span class="kbd">VARS</span> → 2:normalcdf(</td></tr>
         <tr><td>Inverse normal (z*)</td><td><span class="kbd k2">2nd</span> <span class="kbd">VARS</span> → 3:invNorm(</td></tr>
@@ -184,22 +267,43 @@
         <tr><td>Find any command A–Z</td><td><span class="kbd k2">2nd</span> <span class="kbd">0</span> (CATALOG)</td></tr>
       </table>
     </div>
-
-    <div class="ref">
-      <h2>Using your keyboard</h2>
-      <p>Click the screen, then type: digits, <b>+ − * / ^ ( ) ,</b> and <b>.</b> work as expected. <b>Enter</b> = ENTER, <b>Backspace</b> = DEL, <b>Esc</b> = CLEAR, and the arrow keys move the cursor. On the keyboard, <b>−</b> at the start of an entry types a negative sign; on the calculator keys, use <span class="kbd">(−)</span> for negatives, just like the real TI-84.</p>
-      <p>Your lists, stored variables, and settings are saved in this browser, so they're still there when you come back.</p>
+    <div class="ref only30">
+      <h2>TI-30XS style: where to find it</h2>
+      <table>
+        <tr><td>Type a fraction (stacked)</td><td><span class="kbd">n/d</span>, numerator, <span class="kbd">▼</span>, denominator, <span class="kbd">▶</span></td></tr>
+        <tr><td>Mixed number</td><td><span class="kbd k2">2nd</span> <span class="kbd">n/d</span></td></tr>
+        <tr><td>Switch answer: fraction ↔ decimal</td><td><span class="kbd">◄ ►</span> (toggle) after enter</td></tr>
+        <tr><td>Square root / nth root</td><td><span class="kbd k2">2nd</span> <span class="kbd">x²</span> &nbsp;/&nbsp; <span class="kbd k2">2nd</span> <span class="kbd">^</span></td></tr>
+        <tr><td>Scientific notation</td><td><span class="kbd">×10ⁿ</span></td></tr>
+        <tr><td>Previous answer</td><td><span class="kbd k2">2nd</span> <span class="kbd">(−)</span> (ans)</td></tr>
+        <tr><td>Store in x, y, z…</td><td><span class="kbd">sto→</span> <span class="kbd">x yzt abc</span> (press again for y, z, t…)</td></tr>
+        <tr><td>nCr, nPr, factorial, random</td><td><span class="kbd">prb</span></td></tr>
+        <tr><td>Enter data in L1–L3</td><td><span class="kbd">data</span></td></tr>
+        <tr><td>Mean, Sx, five-number summary</td><td><span class="kbd k2">2nd</span> <span class="kbd">data</span> → 1:1-Var Stats</td></tr>
+        <tr><td>Regression line, r</td><td><span class="kbd k2">2nd</span> <span class="kbd">data</span> → 2:2-Var Stats (a, b, r)</td></tr>
+        <tr><td>Normal / binomial probability</td><td><span class="kbd k2">2nd</span> <span class="kbd">data</span> → <span class="kbd">▶</span> DISTR</td></tr>
+        <tr><td>Table of values for f(x)</td><td><span class="kbd">table</span></td></tr>
+        <tr><td>Degrees / radians, fix decimals</td><td><span class="kbd">mode</span></td></tr>
+      </table>
     </div>
-
-    <div class="ref">
-      <h2>Not included (yet)</h2>
+    <div class="ref only84">
+      <h2>TI-84 style: not included (yet)</h2>
       <p>Graphing (Y=, WINDOW, GRAPH, TABLE), matrices, complex numbers, and programs. Those keys show a short notice instead.</p>
     </div>
-
+    <div class="ref only30">
+      <h2>TI-30XS style: not included (yet)</h2>
+      <p>The constant feature (K), DMS minutes/seconds entry, list formulas, and CLASSIC display mode.</p>
+    </div>
+    </div>
+    <div class="ref">
+      <h2>Using your keyboard</h2>
+      <p>Click the screen, then type: digits, <b>+ − * / ^ ( )</b> and <b>.</b> work as expected. <b>Enter</b> = enter, <b>Backspace</b> = delete, <b>Esc</b> = clear, and the arrow keys move the cursor. On the keyboard, <b>−</b> at the start of an entry types a negative sign; on the calculator keys, use <span class="kbd">(−)</span> for negatives, just like the real calculator.</p>
+      <p>Your lists, stored variables, and settings are saved in this browser, so they're still there when you come back.</p>
+    </div>
     <div class="calc-actions">
       <button class="btn-reset" id="reset" type="button">Reset calculator</button>
     </div>
-    <p class="fine">Pioneer Calc is an independent teaching tool written for Glenville State math courses. It is not affiliated with or endorsed by Texas Instruments. TI-84 Plus CE is a trademark of Texas Instruments. Always check your course policy for which calculators are allowed on exams.</p>
+    <p class="fine">Pioneer Calc is an independent teaching tool written for Glenville State math courses. It is not affiliated with or endorsed by Texas Instruments. TI-84 Plus CE and TI-30XS MultiView are trademarks of Texas Instruments. Always check your course policy for which calculators are allowed on exams.</p>
   </section>
 </main>
 
@@ -251,7 +355,7 @@ const S = {
 const DIGIT = /^[0-9]$/;
 const LISTS = ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'];
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZθ'.split('');
-const POSTFIX = new Set(['²', '⁻¹', '³', '!']);
+const POSTFIX = new Set(['²', '⁻¹', '³', '!', '%', '°', 'ʳ', 'ᵍ']);
 const RELOPS = new Set(['=', '≠', '>', '≥', '<', '≤']);
 const ANSPRE = new Set(['+', '-', '*', '/', '^', '²', '⁻¹', '³', '→', '!', ' nPr ', ' nCr ', '=', '≠', '>', '≥', '<', '≤', 'ˣ√', '►Frac', '►Dec']);
 const STATCMDS = ['1-Var Stats ', '2-Var Stats ', 'Med-Med ', 'LinReg(ax+b) ', 'QuadReg ', 'CubicReg ', 'QuartReg ', 'LinReg(a+bx) ', 'LnReg ', 'ExpReg ', 'PwrReg '];
@@ -457,18 +561,21 @@ function fmt(x, sig) {
   let exp = Math.floor(Math.log10(r));
   if (Math.pow(10, exp) > r) exp--; else if (Math.pow(10, exp + 1) <= r) exp++;
   let s;
-  const sciMode = sci || exp >= sig || (fix < 0 && exp <= -4) || (fix >= 0 && a < 0.5 * Math.pow(10, -fix));
+  const st30 = useMode && S.settings.style30, eng = useMode && S.settings.eng;
+  const sciMode = sci || eng || exp >= sig || (fix < 0 && exp <= -4) || (fix >= 0 && a < 0.5 * Math.pow(10, -fix));
   if (sciMode) {
-    let m = r / Math.pow(10, exp), e = exp, ms;
+    let e = exp; if (eng) e = Math.floor(exp / 3) * 3;
+    let m = r / Math.pow(10, e), ms;
+    if (eng) { ms = fix >= 0 ? m.toFixed(fix) : stripZ((+m.toPrecision(sig)).toFixed(Math.max(0, sig - 1 - (exp - e)))); if (parseFloat(ms) >= 1000) { e += 3; m /= 1000; ms = fix >= 0 ? m.toFixed(fix) : stripZ(m.toFixed(sig - 1)); } return (neg ? (st30 ? '-' : '⁻') : '') + ms + 'ᴇ' + (e < 0 ? (st30 ? '-' : '⁻') + (-e) : e); }
     if (fix >= 0) { ms = m.toFixed(fix); if (parseFloat(ms) >= 10) { e++; ms = (m / 10).toFixed(fix); } }
     else { ms = stripZ((+m.toPrecision(sig)).toFixed(sig - 1)); if (parseFloat(ms) >= 10) { e++; ms = stripZ((m / 10).toFixed(sig - 1)); } }
-    s = ms + 'ᴇ' + (e < 0 ? '⁻' + (-e) : e);
+    s = ms + 'ᴇ' + (e < 0 ? (st30 ? '-' : '⁻') + (-e) : e);
   } else {
     if (fix >= 0) s = a.toFixed(fix);
-    else { const dec = exp >= 0 ? sig - 1 - exp : Math.min(sig - 1 - exp, 10); s = stripZ(r.toFixed(Math.max(0, dec))); }
-    if (s.startsWith('0.')) s = s.slice(1);
+    else { const dec = exp >= 0 ? sig - 1 - exp : Math.min(sig - 1 - exp, st30 ? 9 : 10); s = stripZ((st30 ? a : r).toFixed(Math.max(0, dec))); }
+    if (s.startsWith('0.') && !st30) s = s.slice(1);
   }
-  return (neg ? '⁻' : '') + s;
+  return (neg ? (st30 ? '-' : '⁻') : '') + s;
 }
 function fitNum(x, w) {
   let s = fmt(x); if (s.length <= w) return s;
@@ -501,8 +608,8 @@ const FN = {};
 function def(names, spec) { for (const n of [].concat(names)) FN[n] = spec; }
 const vf = (min, max, f) => ({ min, max, vec: true, f });
 const DEG = () => S.settings.angle === 'DEGREE';
-const toRad = x => DEG() ? x * Math.PI / 180 : x;
-const fromRad = x => DEG() ? x * 180 / Math.PI : x;
+const toRad = x => DEG() ? x * Math.PI / 180 : S.settings.angle === 'GRAD' ? x * Math.PI / 200 : x;
+const fromRad = x => DEG() ? x * 180 / Math.PI : S.settings.angle === 'GRAD' ? x * 200 / Math.PI : x;
 const snap = (r, x) => (Math.abs(r) < 1e-13 && Math.abs(x) > 1e-6) ? 0 : r;
 function N(x) { return num(x); }
 function needPos(x) { if (!(x > 0)) err('DOMAIN'); return x; }
@@ -541,6 +648,13 @@ def('lcm(', vf(2, 2, (a, b) => { const g = gcd2(N(a), N(b)); return g === 0 ? 0 
 def('remainder(', vf(2, 2, (a, b) => { N(a); N(b); if (b === 0) return a; return a - b * Math.trunc(a / b); }));
 def('logBASE(', vf(2, 2, (x, b) => { if (N(x) <= 0 || N(b) <= 0 || b === 1) err('DOMAIN'); return Math.log(x) / Math.log(b); }));
 def('not(', vf(1, 1, x => N(x) === 0 ? 1 : 0));
+def('sinh(', vf(1, 1, x => Math.sinh(N(x)))); def('cosh(', vf(1, 1, x => Math.cosh(N(x)))); def('tanh(', vf(1, 1, x => Math.tanh(N(x))));
+def('sinh⁻¹(', vf(1, 1, x => Math.asinh(N(x)))); def('cosh⁻¹(', vf(1, 1, x => { if (N(x) < 1) err('DOMAIN'); return Math.acosh(x); }));
+def('tanh⁻¹(', vf(1, 1, x => { if (Math.abs(N(x)) >= 1) err('DOMAIN'); return Math.atanh(x); }));
+def('R►Pr(', vf(2, 2, (x, y) => Math.hypot(N(x), N(y))));
+def('R►Pθ(', vf(2, 2, (x, y) => fromRad(Math.atan2(N(y), N(x)))));
+def('P►Rx(', vf(2, 2, (r, t) => snap(chk(N(r) * Math.cos(toRad(N(t)))), r)));
+def('P►Ry(', vf(2, 2, (r, t) => snap(chk(N(r) * Math.sin(toRad(N(t)))), r)));
 
 /* distributions */
 def('normalpdf(', vf(1, 3, (x, m = 0, s = 1) => { needPos(N(s)); return nPdf((N(x) - N(m)) / s) / s; }));
@@ -589,6 +703,7 @@ def('randBin(', { min: 2, max: 3, f: ([n, p, c]) => {
   needIntNN(N(n)); needProb(N(p));
   return repeat(countArg(c), () => { let k = 0; for (let i = 0; i < n; i++) if (rand() < p) k++; return k; });
 } });
+def('randint(', { min: 2, max: 3, hidden: true, f: (a) => FN['randInt('].f(a) });
 def('randIntNoRep(', { min: 2, max: 3, f: ([a, b, c]) => {
   N(a); N(b); if (!isInt(a) || !isInt(b)) err('DOMAIN'); const lo = Math.min(a, b), hi = Math.max(a, b);
   const pool = []; for (let k = lo; k <= hi; k++) pool.push(k);
@@ -697,7 +812,8 @@ function parseTokens(tk) {
   const P = () => tk[i];
   const at = t => tk[i] === t;
   const eat = t => { if (tk[i] === t) { i++; return true; } return false; };
-  const closeP = c => { if (eat(c)) return; if (i >= tk.length || tk[i] === '→' || tk[i] === '►Frac' || tk[i] === '►Dec') return; err('SYNTAX', i); };
+  const CONVS = ['►Frac', '►Dec', '►%', '►DMS', '►F◄►D', '►n/d◄►Un/d'];
+  const closeP = c => { if (eat(c)) return; if (i >= tk.length || tk[i] === '→' || CONVS.includes(tk[i])) return; err('SYNTAX', i); };
   const startsPrimary = t => t !== undefined && (DIGIT.test(t) || t === '.' || t === 'ᴇ' || t === '(' || t === '{' || t === 'π' || t === 'e' || t === 'Ans' || t === 'rand' || LISTS.includes(t) || LETTERS.includes(t) || !!FN[t] || t === '⁻');
   function parseOr() { let a = parseAnd(); while (at(' or ') || at(' xor ')) { const op = tk[i++].trim(); a = { t: 'bin', op, a, b: parseAnd() }; } return a; }
   function parseAnd() { let a = parseRel(); while (at(' and ')) { i++; a = { t: 'bin', op: 'and', a, b: parseRel() }; } return a; }
@@ -751,7 +867,7 @@ function parseTokens(tk) {
   }
   if (t0 === 'ClrAllLists' || t0 === 'Clear Entries') { if (tk.length > 1) err('SYNTAX', 1); return { t: 'cmd', name: t0, args: [] }; }
   let e = parseOr();
-  if (at('►Frac') || at('►Dec')) e = { t: 'conv', to: tk[i++], a: e };
+  if (CONVS.includes(P())) e = { t: 'conv', to: tk[i++], a: e };
   if (at('→')) {
     i++; const tp = i, tt = tk[i]; let target;
     if (LETTERS.includes(tt)) { i++; target = { k: 'var', name: tt }; }
@@ -787,6 +903,11 @@ function postop(op, x) {
   if (op === '³') return x * x * x;
   if (op === '⁻¹') { if (x === 0) err('DIVIDE BY 0'); return 1 / x; }
   if (op === '!') return fact(x);
+  if (op === '%') return x / 100;
+  const cur = S.settings.angle === 'DEGREE' ? 180 / Math.PI : S.settings.angle === 'GRAD' ? 200 / Math.PI : 1;
+  if (op === '°') return x * Math.PI / 180 * cur;
+  if (op === 'ʳ') return x * cur;
+  if (op === 'ᵍ') return x * Math.PI / 200 * cur;
 }
 function plain(v) { return (v && typeof v === 'object' && !isList(v) && 'frac' in v) ? v.frac : v; }
 function ev(n, env) {
@@ -802,7 +923,7 @@ function ev(n, env) {
     case 'post': return map1(ev(n.a, env), x => postop(n.op, x));
     case 'call': return callFn(n, env);
     case 'tail': return { tail: n.v };
-    case 'conv': { const v = ev(n.a, env); if (typeof v !== 'number' && !isList(v)) err('DATA TYPE'); return n.to === '►Frac' ? { frac: v } : v; }
+    case 'conv': { const v = ev(n.a, env); if (typeof v !== 'number' && !isList(v)) err('DATA TYPE'); return n.to === '►Frac' ? { frac: v } : n.to === '►Dec' ? v : { frac: v, conv: n.to }; }
     case 'store': return doStore(n, env);
     case 'cmd': return runCmd(n);
   }
@@ -1118,7 +1239,7 @@ const ABOUT = ['Pioneer Calc', 'Works like a TI-84 Plus CE', '', 'Written for Gl
 /* catalog */
 const CATALOG = (() => {
   const extra = ['Ans', 'ClrAllLists', 'ClrList ', 'Clear Entries', '►Dec', '►Frac', ' and ', ' or ', ' xor ', ' nCr ', ' nPr ', 'LEFT', 'CENTER', 'RIGHT', ...STATCMDS];
-  const all = [...new Set([...Object.keys(FN).filter(k => k !== 'rand('), ...extra])];
+  const all = [...new Set([...Object.keys(FN).filter(k => k !== 'rand(' && !FN[k].hidden), ...extra])];
   const key = s => s.trim().replace(/^[^A-Za-z]+/, '').toLowerCase() || '~' + s;
   return all.sort((a, b) => key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0);
 })();
@@ -1481,7 +1602,7 @@ function cellsOf(str, fl) {
   for (const ch of String(str)) { if (/\p{M}/u.test(ch) && out.length) out[out.length - 1].ch += ch; else out.push(fl ? { ch, ...fl } : { ch }); }
   return out;
 }
-function padRow(r) { r = r.slice(0, COLS); while (r.length < COLS) r.push({ ch: ' ' }); return r; }
+function padRow(r, w = COLS) { r = r.slice(0, w); while (r.length < w) r.push({ ch: ' ' }); return r; }
 function cursorCell(base) {
   if (S.shift === '2nd') return { ch: '↑', ks: true };
   if (S.shift === 'alpha') return { ch: S.alphaLock ? 'A' : 'A', ks: true, k: S.alphaLock };
@@ -1494,9 +1615,9 @@ function editorCells(e, active) {
   return cells;
 }
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-function rowHTML(r) {
-  return '<div class="lcd-row">' + padRow(r).map(c => {
-    const cl = 'c' + (c.i ? ' i' : '') + (c.k ? ' k' : '') + (c.ks ? ' ks' : '');
+function rowHTML(r, w = COLS) {
+  return '<div class="lcd-row">' + padRow(r, w).map(c => {
+    const cl = 'c' + (c.i ? ' i' : '') + (c.k ? ' cb' : '') + (c.ks ? ' ks' : '');
     return '<span class="' + cl + '">' + (c.ch === ' ' ? '&nbsp;' : esc(c.ch)) + '</span>';
   }).join('') + '</div>';
 }
@@ -1634,7 +1755,7 @@ function render() {
     case 'off': rows = []; break;
   }
   while (rows.length < ROWS) rows.push([]);
-  rowsEl.innerHTML = rows.slice(0, ROWS).map(rowHTML).join('');
+  rowsEl.innerHTML = rows.slice(0, ROWS).map(r => rowHTML(r)).join('');
   if (S.mode === 'draw') drawPlot(S.draw);
 }
 
@@ -1731,8 +1852,16 @@ function flash(id) { const b = keyButtons[id]; if (!b) return; b.classList.add('
 document.addEventListener('keydown', e => {
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   const tgt = e.target; if (tgt && (tgt.tagName === 'INPUT' || tgt.tagName === 'TEXTAREA')) return;
-  const inCalc = lcdEl.contains(document.activeElement) || pad.contains(document.activeElement) || document.activeElement === document.body;
+  const ae = document.activeElement;
+  const inCalc = lcdEl.contains(ae) || pad.contains(ae) || lcd30.contains(ae) || pad30.contains(ae) || ae === document.body || (ae && ae.closest && ae.closest('.model-switch'));
   if (!inCalc) return;
+  if (MODEL === '30') {
+    let id3 = { ...KB, '/': 'div', '^': 'pow' }[e.key];
+    if (e.key === '-') { const E = ed30(); const sq = TS.mode === 'home' || TS.mode === 'fx' ? curSeq(E) : null; const prev = sq && E.pos > 0 ? sq[E.pos - 1] : null; id3 = sq && (!prev || (prev.k === 't' && /^[+\-*/^(,→]$/.test(prev.v)) || (prev && prev.k === 't' && prev.v.endsWith('('))) && TS.shift === null ? 'neg' : 'sub'; }
+    if (!id3) return; e.preventDefault(); if (ae && pad30.contains(ae)) lcd30.focus({ preventScroll: true });
+    const b = keyButtons30[id3]; if (b) { b.classList.add('down'); setTimeout(() => b.classList.remove('down'), 110); }
+    press30(id3); return;
+  }
   let id = KB[e.key];
   if (e.key === '-') {
     const e0 = ed(); const prev = e0 && e0.c > 0 ? e0.t[e0.c - 1] : null;
@@ -1753,10 +1882,709 @@ resetBtn.addEventListener('click', () => {
 window.addEventListener('resize', () => { if (S.mode === 'draw') render(); });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (S.mode === 'draw') render(); });
 
-load(); render();
+/* ======================================================================
+   TI-30XS MultiView–style model ("Pioneer Calc 30")
+   ====================================================================== */
+const C30 = 16, R30 = 4;
+const TS = {
+  settings: { angle: 'DEGREE', notation: 'NORM', fix: -1 },
+  vars: {}, ans: 0, hist: [],
+  eh: { root: [], path: [], pos: 0 }, ef: { root: [], path: [], pos: 0 },
+  mode: 'home', shift: null, hyp: false, hsel: null, lastVar: false,
+  menu: null, form: null, res: null, se: null, msg: null, errS: null, modeS: null, tbl: null, ret: 'home', lastStat: null
+};
+const VARS30 = ['X', 'Y', 'Z', 'T', 'A', 'B', 'C'];
+const VARNAME = { X: 'x', Y: 'y', Z: 'z', T: 't', A: 'a', B: 'b', C: 'c' };
+function engSettings() { return { sci: TS.settings.notation === 'SCI', eng: TS.settings.notation === 'ENG', fix: TS.settings.fix, angle: TS.settings.angle, diag: true, wiz: true, style30: true }; }
+function ctx30(fn) {
+  const sv = { settings: S.settings, vars: S.vars, ans: S.ans };
+  S.settings = engSettings(); S.vars = TS.vars; S.ans = TS.ans;
+  try { return fn(); } finally { TS.vars = S.vars; S.settings = sv.settings; S.vars = sv.vars; S.ans = sv.ans; }
+}
+
+/* ---------- 2-D (MathPrint) editor ---------- */
+const SLOTS = { frac: ['a', 'b'], mixed: ['w', 'a', 'b'], pow: ['a'], sqrt: ['a'], root: ['i', 'a'], sci: ['a'], tenpow: ['a'], epow: ['a'] };
+const tk30 = v => ({ k: 't', v });
+const ed30 = () => TS.mode === 'fx' ? TS.ef : TS.eh;
+const clone = x => JSON.parse(JSON.stringify(x));
+function curSeq(E) { const f = E.path[E.path.length - 1]; return f ? f.item[f.slot] : E.root; }
+function topEmpty(E) { return !E.path.length && !E.root.length; }
+function put(E, v) {
+  if (E === TS.eh && topEmpty(E) && ANSPRE.has(v)) { E.root.push(tk30('Ans')); E.pos = 1; }
+  const s = curSeq(E); s.splice(E.pos, 0, tk30(v)); E.pos++;
+}
+function putTpl(E, item, enter, ansPre) {
+  if (ansPre && E === TS.eh && topEmpty(E)) { E.root.push(tk30('Ans')); E.pos = 1; }
+  const s = curSeq(E); s.splice(E.pos, 0, item);
+  if (enter) { const sl = SLOTS[item.k][0]; E.path.push({ item, slot: sl, ps: s }); E.pos = item[sl].length; } else E.pos++;
+}
+function putItems(E, items) { const s = curSeq(E); s.splice(E.pos, 0, ...items); E.pos += items.length; }
+function mvRight(E) {
+  const s = curSeq(E);
+  if (E.pos < s.length) { const it = s[E.pos]; if (it.k !== 't') { E.path.push({ item: it, slot: SLOTS[it.k][0], ps: s }); E.pos = 0; } else E.pos++; return; }
+  if (!E.path.length) return;
+  const fr = E.path[E.path.length - 1], sl = SLOTS[fr.item.k], i = sl.indexOf(fr.slot);
+  if (i < sl.length - 1) { fr.slot = sl[i + 1]; E.pos = 0; return; }
+  E.path.pop(); E.pos = fr.ps.indexOf(fr.item) + 1;
+}
+function mvLeft(E) {
+  const s = curSeq(E);
+  if (E.pos > 0) { const it = s[E.pos - 1]; if (it.k !== 't') { const sl = SLOTS[it.k]; E.path.push({ item: it, slot: sl[sl.length - 1], ps: s }); E.pos = it[sl[sl.length - 1]].length; } else E.pos--; return; }
+  if (!E.path.length) return;
+  const fr = E.path[E.path.length - 1], sl = SLOTS[fr.item.k], i = sl.indexOf(fr.slot);
+  if (i > 0) { fr.slot = sl[i - 1]; E.pos = fr.item[fr.slot].length; return; }
+  E.path.pop(); E.pos = fr.ps.indexOf(fr.item);
+}
+function mvVert(E, dir) {
+  for (let d = E.path.length - 1; d >= 0; d--) {
+    const fr = E.path[d];
+    if (fr.item.k === 'frac' || fr.item.k === 'mixed') {
+      if (dir < 0 && fr.slot === 'b') { E.path.length = d + 1; fr.slot = 'a'; E.pos = fr.item.a.length; return true; }
+      if (dir > 0 && fr.slot === 'a') { E.path.length = d + 1; fr.slot = 'b'; E.pos = fr.item.b.length; return true; }
+    }
+  }
+  return false;
+}
+function del30(E) {
+  const s = curSeq(E);
+  if (E.pos < s.length) { s.splice(E.pos, 1); return; }
+  if (E.pos > 0) { s.splice(E.pos - 1, 1); E.pos--; return; }
+  if (E.path.length) {
+    const fr = E.path[E.path.length - 1];
+    if (SLOTS[fr.item.k].every(k => !fr.item[k].length)) { E.path.pop(); const i = fr.ps.indexOf(fr.item); fr.ps.splice(i, 1); E.pos = i; }
+    else mvLeft(E);
+  }
+}
+function clearEd(E) { E.root = []; E.path = []; E.pos = 0; }
+function flat(seq) {
+  const o = [];
+  const f = x => { const r = flat(x); if (!r.length) err('SYNTAX'); return r; };
+  seq.forEach((it, idx) => {
+    if (it.k === 't') { o.push(it.v); return; }
+    switch (it.k) {
+      case 'frac': o.push('(', '(', ...f(it.a), ')', '/', '(', ...f(it.b), ')', ')'); break;
+      case 'mixed': o.push('(', ...f(it.w), '+', '(', ...f(it.a), ')', '/', '(', ...f(it.b), ')', ')'); break;
+      case 'pow': if (idx === 0) err('SYNTAX'); o.push('^', '(', ...f(it.a), ')'); break;
+      case 'sqrt': o.push('√(', ...f(it.a), ')'); break;
+      case 'root': o.push('(', '(', ...f(it.i), ')', 'ˣ√', '(', ...f(it.a), ')', ')'); break;
+      case 'sci': if (idx === 0) o.push('1'); o.push('*', '1', '0', '^', '(', ...f(it.a), ')'); break;
+      case 'tenpow': o.push('10^(', ...f(it.a), ')'); break;
+      case 'epow': o.push('e^(', ...f(it.a), ')'); break;
+    }
+  });
+  return o;
+}
+function flags(seq, fl = { frac: false, sqrt: false, pi: false }) {
+  seq.forEach(it => {
+    if (it.k === 't') { if (it.v === 'π') fl.pi = true; if (it.v === '√(' ) fl.sqrt = true; return; }
+    if (it.k === 'frac' || it.k === 'mixed') fl.frac = true;
+    if (it.k === 'sqrt' || it.k === 'root') fl.sqrt = true;
+    SLOTS[it.k].forEach(k => flags(it[k], fl));
+  });
+  return fl;
+}
+
+/* ---------- MathPrint rendering ---------- */
+const DISP30 = { '*': '×', '/': '÷', 'X': 'x', 'Y': 'y', 'Z': 'z', 'T': 't', 'A': 'a', 'B': 'b', 'C': 'c', 'randInt(': 'randint(' };
+const dtok = v => DISP30[v] ?? v;
+function curH() { return '<span class="cur30' + (TS.shift === '2nd' ? ' s2' : '') + '"></span>'; }
+function seqH(seq, cur, top) {
+  let h = ''; const here = cur && cur.seq === seq;
+  seq.forEach((it, i) => { if (here && cur.pos === i) h += curH(); h += itemH(it, cur); });
+  if (here && cur.pos === seq.length) h += curH();
+  if (!seq.length && !here && !top) h += '<span class="slot"></span>';
+  return h;
+}
+function itemH(it, cur) {
+  switch (it.k) {
+    case 't': return esc(dtok(it.v));
+    case 'frac': return '<span class="fr"><span class="n">' + seqH(it.a, cur) + '</span><span class="d">' + seqH(it.b, cur) + '</span></span>';
+    case 'mixed': return seqH(it.w, cur) + '<span class="fr"><span class="n">' + seqH(it.a, cur) + '</span><span class="d">' + seqH(it.b, cur) + '</span></span>';
+    case 'pow': return '<sup class="sp">' + seqH(it.a, cur) + '</sup>';
+    case 'sqrt': return '<span class="sq"><span class="rs">√</span><span class="rad">' + seqH(it.a, cur) + '</span></span>';
+    case 'root': return '<sup class="ri">' + seqH(it.i, cur) + '</sup><span class="sq"><span class="rs">√</span><span class="rad">' + seqH(it.a, cur) + '</span></span>';
+    case 'sci': return '×10<sup class="sp">' + seqH(it.a, cur) + '</sup>';
+    case 'tenpow': return '10<sup class="sp">' + seqH(it.a, cur) + '</sup>';
+    case 'epow': return 'e<sup class="sp">' + seqH(it.a, cur) + '</sup>';
+  }
+  return '';
+}
+function numH(str) { const k = str.indexOf('ᴇ'); if (k < 0) return esc(str); return esc(str.slice(0, k)) + '×10<sup class="sp">' + esc(str.slice(k + 1)) + '</sup>'; }
+function fracH(n, d) { return '<span class="fr"><span class="n">' + n + '</span><span class="d">' + d + '</span></span>'; }
+function fracLim(x, maxD) {
+  if (isInt(x)) return [x, 1];
+  const sg = Math.sign(x), a = Math.abs(x); let h0 = 1, h1 = 0, k0 = 0, k1 = 1, b = a;
+  for (let i = 0; i < 64; i++) {
+    const ai = Math.floor(b), h2 = ai * h0 + h1, k2 = ai * k0 + k1; if (k2 > maxD) break;
+    h1 = h0; h0 = h2; k1 = k0; k0 = k2;
+    if (Math.abs(h0 / k0 - a) <= 1e-10 * Math.max(1, a)) return [sg * h0, k0];
+    const f = b - ai; if (f === 0) break; b = 1 / f;
+  }
+  return null;
+}
+function fracForm(v) { const f = fracLim(v, 1000); if (!f || f[1] === 1) return null; return (f[0] < 0 ? '-' : '') + fracH(Math.abs(f[0]), f[1]); }
+function mixedForm(v) {
+  const f = fracLim(v, 1000); if (!f || f[1] === 1) return null; const n = Math.abs(f[0]), d = f[1];
+  if (n < d) return (f[0] < 0 ? '-' : '') + fracH(n, d);
+  return (f[0] < 0 ? '-' : '') + Math.floor(n / d) + fracH(n % d, d);
+}
+function radForm(v) {
+  if (v === 0) return null; const sg = v < 0 ? '-' : ''; const f = fracLim(v * v, 1000); if (!f) return null;
+  let n = f[0] * f[1]; if (!isInt(n) || n <= 0 || n > 1e7) return null; const Q = f[1];
+  let k = 1; for (let i = 2; i * i <= n; i++) while (n % (i * i) === 0) { k *= i; n /= i * i; }
+  if (n === 1) return null;
+  const g = gcd2(k, Q), kk = k / g, qq = Q / g;
+  if (Math.abs(kk * Math.sqrt(n) / qq - Math.abs(v)) > 1e-9 * Math.abs(v)) return null;
+  const top = (kk === 1 ? '' : kk) + '<span class="sq"><span class="rs">√</span><span class="rad">' + n + '</span></span>';
+  return sg + (qq === 1 ? top : fracH(top, qq));
+}
+function piForm(v) {
+  const f = fracLim(v / Math.PI, 1000); if (!f || f[0] === 0 || Math.abs(f[0]) > 1000) return null;
+  const n = Math.abs(f[0]), top = (n === 1 ? '' : n) + 'π';
+  return (f[0] < 0 ? '-' : '') + (f[1] === 1 ? top : fracH(top, f[1]));
+}
+function dmsForm(v) {
+  const sg = v < 0 ? '-' : ''; let a = Math.abs(v); let d = Math.floor(a), m = Math.floor((a - d) * 60), sec = ((a - d) * 60 - m) * 60;
+  sec = +sec.toPrecision(10); if (sec >= 60) { sec -= 60; m++; } if (m >= 60) { m -= 60; d++; }
+  return sg + d + '°' + m + '′' + esc(fmt(sec)) + '″';
+}
+function buildForms(r, fl) {
+  const val = plain(r);
+  if (isList(val)) return ['{' + val.map(x => numH(fmt(x))).join(',') + '}'];
+  const conv = r && typeof r === 'object' ? r.conv : undefined;
+  const dec = numH(fmt(val));
+  if (conv === '►%') return [numH(fmt(val * 100)) + '%'];
+  if (conv === '►DMS') return [dmsForm(val)];
+  if (conv === '►n/d◄►Un/d') { const m = mixedForm(val); return m ? [m, dec] : [dec]; }
+  if (isInt(val)) return [dec];
+  const fr = fracForm(val), forms = [];
+  const wantFrac = fl.frac || (r && typeof r === 'object' && 'frac' in r);
+  if (wantFrac && fr) forms.push(fr);
+  else if (fl.sqrt && !fr) { const rf = radForm(val); if (rf) forms.push(rf); }
+  if (!forms.length && fl.pi && !fr) { const pf = piForm(val); if (pf) forms.push(pf); }
+  forms.push(dec);
+  if (fr && !forms.includes(fr)) forms.push(fr);
+  return forms;
+}
+function numItems(v) {
+  let s = (+v.toPrecision(10)).toString(); const items = [];
+  let m = s, ex = null; const k = s.indexOf('e'); if (k >= 0) { m = s.slice(0, k); ex = s.slice(k + 1).replace('+', ''); }
+  for (const ch of m) items.push(tk30(ch === '-' ? '⁻' : ch));
+  if (ex !== null) items.push({ k: 'sci', a: [...ex].map(ch => tk30(ch === '-' ? '⁻' : ch)) });
+  return items;
+}
+
+/* ---------- home ---------- */
+function enter30() {
+  const E = TS.eh; let seq = E.root;
+  if (!seq.length) { if (!TS.hist.length) return; seq = clone(TS.hist[TS.hist.length - 1].e); }
+  const toks = flat(seq); const fl = flags(seq);
+  const out = ctx30(() => { const r = execute(toks); return { r, forms: buildForms(r, fl) }; });
+  const v = plain(out.r);
+  if (typeof v === 'number' || isList(v)) TS.ans = isList(v) ? v.slice() : v;
+  TS.hist.push({ e: clone(seq), forms: out.forms, fi: 0, v: typeof v === 'number' ? v : null });
+  if (TS.hist.length > 30) TS.hist.shift();
+  clearEd(E);
+}
+function sel30() { const o = []; for (let i = TS.hist.length - 1; i >= 0; i--) { o.push({ hi: i, part: 'r' }); o.push({ hi: i, part: 'e' }); } return o; }
+function toggle30() {
+  if (!TS.hist.length) return;
+  let hi = TS.hist.length - 1; if (TS.hsel !== null) hi = sel30()[TS.hsel].hi;
+  const h = TS.hist[hi]; if (h.forms.length > 1) h.fi = (h.fi + 1) % h.forms.length;
+}
+
+/* ---------- menus ---------- */
+const it3 = (label, tok) => ({ label, tok: tok === undefined ? label : tok });
+const na3 = label => ({ label, na: true });
+const run3 = (label, run) => ({ label, run });
+function statItems() {
+  return [
+    run3('1-Var Stats', () => open30Form('1-Var Stats', [ch3('data', 'DATA:', ['L1', 'L2', 'L3']), ch3('frq', 'FRQ:', ['ONE', 'L1', 'L2', 'L3'])], calc1Var)),
+    run3('2-Var Stats', () => open30Form('2-Var Stats', pairFields(), V => calc2Var(V, 'stats'))),
+    run3('LinReg ax+b', () => open30Form('LinReg ax+b', pairFields(), V => calc2Var(V, 'lin'))),
+    run3('QuadraticReg', () => open30Form('QuadraticReg', pairFields(), V => calc2Var(V, 'quad'))),
+    run3('CubicReg', () => open30Form('CubicReg', pairFields(), V => calc2Var(V, 'cubic'))),
+    run3('LnReg a+blnx', () => open30Form('LnReg a+blnx', pairFields(), V => calc2Var(V, 'ln'))),
+    run3('ExpReg ab^x', () => open30Form('ExpReg ab^x', pairFields(), V => calc2Var(V, 'exp'))),
+    run3('PwrReg ax^b', () => open30Form('PwrReg ax^b', pairFields(), V => calc2Var(V, 'pwr'))),
+    run3('StatVars', () => { if (!TS.lastStat) { msg30(['No stats yet.', 'Run 1-Var or', '2-Var Stats first']); return; } TS.res = { items: TS.lastStat, sel: 0, top: 0, numbered: true }; TS.mode = 'result'; })
+  ];
+}
+function distrItems() {
+  const d = (label, fields, f) => run3(label, () => open30Form(label, fields, f));
+  const num = (k, l, def) => ({ k, l, def: def || '' });
+  return [
+    d('Normalpdf', [num('x', 'x='), num('m', 'μ=', '0'), num('s', 'σ=', '1')], V => [['P', FN['normalpdf('].f(V.n('x'), V.n('m'), V.n('s'))]]),
+    d('Normalcdf', [num('lo', 'LOWER='), num('hi', 'UPPER='), num('m', 'μ=', '0'), num('s', 'σ=', '1')], V => [['P', FN['normalcdf('].f(V.n('lo'), V.n('hi'), V.n('m'), V.n('s'))]]),
+    d('invNormal', [num('a', 'area='), num('m', 'μ=', '0'), num('s', 'σ=', '1')], V => [['x', FN['invNorm('].f(V.n('a'), V.n('m'), V.n('s'))]]),
+    d('Binompdf', [num('n', 'n='), num('p', 'p='), num('x', 'x=')], V => [['P', FN['binompdf('].f([V.n('n'), V.n('p'), V.n('x')])]]),
+    d('Binomcdf', [num('n', 'n='), num('p', 'p='), num('x', 'x=')], V => [['P', FN['binomcdf('].f([V.n('n'), V.n('p'), V.n('x')])]]),
+    d('Poissonpdf', [num('m', 'μ='), num('x', 'x=')], V => [['P', FN['poissonpdf('].f(V.n('m'), V.n('x'))]]),
+    d('Poissoncdf', [num('m', 'μ='), num('x', 'x=')], V => [['P', FN['poissoncdf('].f(V.n('m'), V.n('x'))]]),
+    d('Geometpdf', [num('p', 'p='), num('x', 'x=')], V => [['P', FN['geometpdf('].f(V.n('p'), V.n('x'))]]),
+    d('Geometcdf', [num('p', 'p='), num('x', 'x=')], V => [['P', FN['geometcdf('].f(V.n('p'), V.n('x'))]])
+  ];
+}
+const ch3 = (k, l, opts) => ({ k, l, type: 'choice', opts });
+const pairFields = () => [ch3('x', 'xDATA:', ['L1', 'L2', 'L3']), ch3('y', 'yDATA:', ['L1', 'L2', 'L3']), ch3('frq', 'FRQ:', ['ONE', 'L1', 'L2', 'L3'])];
+const M30 = {
+  prb: () => [{ name: 'PRB', items: [it3('nPr', ' nPr '), it3('nCr', ' nCr '), it3('!')] }, { name: 'RAND', items: [it3('rand'), it3('randint(', 'randInt(')] }],
+  angle: () => [{ name: 'DMS', items: [it3('°'), na3('′ (minutes)'), na3('″ (seconds)'), it3('r', 'ʳ'), it3('g', 'ᵍ'), it3('►DMS')] }, { name: 'R◄►P', items: [it3('R►Pr('), it3('R►Pθ('), it3('P►Rx('), it3('P►Ry(')] }],
+  stat: () => [{ name: 'STAT-REG', items: statItems() }, { name: 'DISTR', items: distrItems() }],
+  dataclr: () => [{ name: 'CLEAR', items: ['L1', 'L2', 'L3'].map(l => run3('Clear ' + l, () => { S.lists[l] = []; back30(); })).concat([run3('Clear ALL', () => { ['L1', 'L2', 'L3'].forEach(l => S.lists[l] = []); back30(); })]) }, { name: 'FORMULA', items: [na3('Add/Edit Frmla'), na3('Clear L1 Frmla'), na3('Clear L2 Frmla'), na3('Clear L3 Frmla'), na3('Clear ALL')] }],
+  recall: () => [{ name: 'RECALL VAR', items: VARS30.map(v => run3(VARNAME[v] + '=' + ctx30(() => fmt(TS.vars[v] ?? 0)), () => { back30(); putItems(ed30(), numItems(TS.vars[v] ?? 0)); })) }],
+  clrvar: () => [{ name: 'CLEAR VAR?', items: [run3('Yes', () => { TS.vars = {}; back30(); }), run3('No', () => back30())] }],
+  reset: () => [{ name: 'RESET?', items: [run3('No', () => back30()), run3('Yes', () => { reset30(); msg30(['', 'Memory cleared']); })] }]
+};
+function open30Menu(name) {
+  if (!['menu', 'msg'].includes(TS.mode)) TS.ret = TS.mode;
+  if (!['home', 'fx', 'data'].includes(TS.ret)) TS.ret = 'home';
+  TS.menu = { name, tabs: M30[name](), tab: 0, sel: 0, top: 0 }; TS.mode = 'menu';
+}
+function back30() { TS.menu = null; TS.mode = TS.ret || 'home'; if (TS.mode === 'data' && !TS.se) TS.mode = 'home'; }
+function msg30(lines) { TS.msg = lines; TS.mode = 'msg'; }
+function na30(label) { msg30([label, 'is not part of', 'Pioneer Calc 30', 'yet.']); }
+function choose30(it) {
+  if (it.na) { na30(it.label); return; }
+  if (it.run) { TS.menu = null; it.run(); return; }
+  back30();
+  if (TS.mode === 'data') { seInsert30(it.tok); return; }
+  put(ed30(), it.tok);
+}
+function menuKey30(id, s2) {
+  const m = TS.menu, items = m.tabs[m.tab].items, n = items.length;
+  if (id === 'up') m.sel = (m.sel - 1 + n) % n;
+  else if (id === 'down') m.sel = (m.sel + 1) % n;
+  else if (id === 'left' || id === 'right') { const tn = m.tabs.length; m.tab = (m.tab + (id === 'left' ? -1 : 1) + tn) % tn; m.sel = 0; m.top = 0; }
+  else if (id === 'enter') { choose30(items[m.sel]); return; }
+  else if (id === 'clear') { back30(); return; }
+  else if (/^[0-9]$/.test(id) && !s2) { const k = id === '0' ? 9 : +id - 1; if (k < n) { m.sel = k; choose30(items[k]); return; } }
+  if (m.sel < m.top) m.top = m.sel; if (m.sel > m.top + 2) m.top = m.sel - 2;
+}
+
+/* ---------- prompt screens ---------- */
+function open30Form(title, fields, calc) {
+  TS.form = { title, calc, foc: 0, oc: 0, top: 0, fresh: true, fields: fields.map(f => f.type === 'choice' ? { ...f, v: f.k === 'y' ? 1 : 0 } : { ...f, v: { t: tokenizeText(f.def || ''), c: (f.def || '').length } }) };
+  TS.form.fields.forEach(f => { if (f.type !== 'choice') f.v.c = f.v.t.length; });
+  TS.mode = 'form'; syncOc30();
+}
+function formRows30() { return [...TS.form.fields, { type: 'calc' }]; }
+function syncOc30() { const r = formRows30()[TS.form.foc]; if (r.type === 'choice') TS.form.oc = r.v; TS.form.fresh = true; }
+function formKey30(id, s2) {
+  const f = TS.form, rows = formRows30(), row = rows[f.foc], isNum = !row.type;
+  const tok = keyTok30(id, s2);
+  if (tok !== null) { if (isNum) { if (f.fresh) { row.v = { t: [], c: 0 }; f.fresh = false; } row.v.t.splice(row.v.c, 0, tok); row.v.c++; } return; }
+  switch (id) {
+    case 'up': if (f.foc > 0) { f.foc--; syncOc30(); } break;
+    case 'down': if (f.foc < rows.length - 1) { f.foc++; syncOc30(); } break;
+    case 'left': if (row.type === 'choice') f.oc = Math.max(0, f.oc - 1); else if (isNum && row.v.c > 0) { row.v.c--; f.fresh = false; } break;
+    case 'right': if (row.type === 'choice') f.oc = Math.min(row.opts.length - 1, f.oc + 1); else if (isNum && row.v.c < row.v.t.length) { row.v.c++; f.fresh = false; } break;
+    case 'enter':
+      if (row.type === 'choice') { row.v = f.oc; if (f.foc < rows.length - 1) { f.foc++; syncOc30(); } }
+      else if (row.type === 'calc') { runForm30(); return; }
+      else if (f.foc < rows.length - 1) { f.foc++; syncOc30(); }
+      break;
+    case 'del': if (isNum) { f.fresh = false; edDel(row.v); } break;
+    case 'clear': if (isNum && row.v.t.length) { row.v = { t: [], c: 0 }; f.fresh = false; } else { TS.mode = 'home'; TS.form = null; return; } break;
+  }
+  if (f.foc < f.top) f.top = f.foc; if (f.foc > f.top + 2) f.top = f.foc - 2;
+}
+function runForm30() {
+  const f = TS.form;
+  const V = {
+    n: k => { const fl = f.fields.find(x => x.k === k); if (!fl.v.t.length) err('INVALID'); return num(plain(execute(fl.v.t))); },
+    c: k => f.fields.find(x => x.k === k).v
+  };
+  try {
+    const raw = ctx30(() => f.calc(V));
+    if (raw === null) { TS.mode = 'table'; TS.form = null; return; }
+    const items = ctx30(() => raw.map(([label, v]) => ({ label, v, txt: typeof v === 'number' ? fmt(v) : v })));
+    const nv = items.filter(i => typeof i.v === 'number');
+    if (nv.length === 1) TS.ans = nv[0].v;
+    TS.res = { title: f.title, items, sel: Math.max(0, items.findIndex(i => typeof i.v === 'number')), top: 0, numbered: items.length > 2 };
+    TS.mode = 'result';
+  } catch (e) { if (!(e instanceof CalcError)) throw e; TS.errS = { code: e.code, back: 'form' }; TS.mode = 'error'; }
+}
+const listOf = i => S.lists['L' + (i + 1)];
+function freqOf(V) { const q = V.c('frq'); return q === 0 ? null : listOf(q - 1); }
+function calc1Var(V) {
+  const o = oneVar(listOf(V.c('data')), freqOf(V));
+  const items = [['n', o.n], ['x̄', o.mean], ['Sx', o.Sx], ['σx', o.sx], ['Σx', o.s], ['Σx²', o.s2], ['MinX', o.minX], ['Q1', o.Q1], ['Med', o.Med], ['Q3', o.Q3], ['MaxX', o.maxX]];
+  TS.lastStat = null; return (TS.lastStat = items.map(([l, v]) => [l, v === null ? '' : v])).map(x => x);
+}
+function calc2Var(V, kind) {
+  const d = pairs(listOf(V.c('x')), listOf(V.c('y')), freqOf(V));
+  if (kind === 'stats') {
+    const mx = moments(d.x, d.f), my = moments(d.y, d.f), r = linFit(d); let sxy = 0; d.x.forEach((x, i) => sxy += d.f[i] * x * d.y[i]);
+    const items = [['n', mx.n], ['x̄', mx.mean], ['Sx', mx.Sx], ['σx', mx.sx], ['ȳ', my.mean], ['Sy', my.Sx], ['σy', my.sx], ['Σx', mx.s], ['Σx²', mx.s2], ['Σy', my.s], ['Σy²', my.s2], ['Σxy', sxy], ['a', r.b], ['b', r.a], ['r', r.r], ['MinX', Math.min(...d.x)], ['MaxX', Math.max(...d.x)], ['MinY', Math.min(...d.y)], ['MaxY', Math.max(...d.y)]];
+    TS.lastStat = items.map(([l, v]) => [l, v === null ? '' : v]); return TS.lastStat;
+  }
+  if (kind === 'lin') { const r = linFit(d); return [['y=ax+b', ''], ['a', r.b], ['b', r.a], ['r²', r.r * r.r], ['r', r.r]]; }
+  if (kind === 'quad' || kind === 'cubic') {
+    const deg = kind === 'quad' ? 2 : 3, r = polyFit(d, deg), out = [[deg === 2 ? 'y=ax²+bx+c' : 'y=ax³+bx²+cx+d', '']];
+    for (let j = deg; j >= 0; j--) out.push(['abcd'[deg - j], r.cs[j]]); out.push(['R²', r.R2]); return out;
+  }
+  if (kind === 'ln') { if (d.x.some(x => x <= 0)) err('DOMAIN'); const r = linFit({ x: d.x.map(Math.log), y: d.y, f: d.f }); return [['y=a+b·lnx', ''], ['a', r.a], ['b', r.b], ['r²', r.r * r.r], ['r', r.r]]; }
+  if (kind === 'exp') { if (d.y.some(y => y <= 0)) err('DOMAIN'); const r = linFit({ x: d.x, y: d.y.map(Math.log), f: d.f }); return [['y=a·b^x', ''], ['a', Math.exp(r.a)], ['b', Math.exp(r.b)], ['r²', r.r * r.r], ['r', r.r]]; }
+  if (kind === 'pwr') { if (d.x.some(x => x <= 0) || d.y.some(y => y <= 0)) err('DOMAIN'); const r = linFit({ x: d.x.map(Math.log), y: d.y.map(Math.log), f: d.f }); return [['y=a·x^b', ''], ['a', Math.exp(r.a)], ['b', r.b], ['r²', r.r * r.r], ['r', r.r]]; }
+}
+function resultKey30(id) {
+  const r = TS.res, n = r.items.length;
+  if (id === 'up') { r.sel = Math.max(0, r.sel - 1); }
+  else if (id === 'down') { r.sel = Math.min(n - 1, r.sel + 1); }
+  else if (id === 'enter') { const it = r.items[r.sel]; TS.mode = 'home'; TS.res = null; if (it && typeof it.v === 'number') putItems(TS.eh, numItems(it.v)); return; }
+  else { TS.mode = 'home'; TS.res = null; return; }
+  const vis = r.title ? 3 : 4; if (r.sel < r.top) r.top = r.sel; if (r.sel > r.top + vis - 1) r.top = r.sel - vis + 1;
+}
+
+/* ---------- data editor (L1–L3) ---------- */
+function openData30() { TS.se = { col: 0, row: 1, top: 1, ed: null }; TS.mode = 'data'; }
+function seInsert30(tok) { const se = TS.se; if (!se.ed) se.ed = { t: [], c: 0 }; se.ed.t.splice(se.ed.c, 0, tok); se.ed.c++; }
+function seCommit30() {
+  const se = TS.se, nm = 'L' + (se.col + 1), e = se.ed; se.ed = null;
+  if (!e || !e.t.length) { if (e && se.row === 0) S.lists[nm] = []; return; }
+  const v = ctx30(() => plain(execute(e.t)));
+  if (se.row === 0) { if (!isList(v)) err('DATA TYPE'); S.lists[nm] = v.slice(); return; }
+  num(v); const Ls = S.lists[nm]; if (se.row <= Ls.length) Ls[se.row - 1] = v; else Ls.push(v);
+}
+function dataKey30(id, s2) {
+  const se = TS.se, maxRow = () => S.lists['L' + (se.col + 1)].length + 1;
+  const tok = keyTok30(id, s2);
+  if (tok !== null) { seInsert30(tok); return; }
+  if (id === 'data' && !s2) { open30Menu('dataclr'); return; }
+  try {
+    switch (id) {
+      case 'enter': seCommit30(); se.row = se.row === 0 ? 1 : Math.min(se.row + 1, maxRow()); break;
+      case 'up': seCommit30(); se.row = Math.max(0, se.row - 1); break;
+      case 'down': seCommit30(); se.row = Math.min(se.row + 1, maxRow()); break;
+      case 'left': seCommit30(); se.col = Math.max(0, se.col - 1); se.row = Math.min(se.row, maxRow()); break;
+      case 'right': seCommit30(); se.col = Math.min(2, se.col + 1); se.row = Math.min(se.row, maxRow()); break;
+      case 'del': if (se.ed) edDel(se.ed); else { const Ls = S.lists['L' + (se.col + 1)]; if (se.row >= 1 && se.row <= Ls.length) Ls.splice(se.row - 1, 1); } break;
+      case 'clear': se.ed = { t: [], c: 0 }; break;
+    }
+  } catch (e) { if (!(e instanceof CalcError)) throw e; TS.errS = { code: e.code, back: 'data' }; TS.mode = 'error'; return; }
+  if (se.row >= 1) { if (se.row < se.top) se.top = se.row; if (se.row > se.top + 1) se.top = se.row - 1; }
+}
+
+/* ---------- function table ---------- */
+function tableKey30(id) {
+  const t = TS.tbl;
+  if (id === 'up') { if (t.sel > 0) t.sel--; else t.top--; }
+  else if (id === 'down') { if (t.sel < 2) t.sel++; else t.top++; }
+  else if (id === 'clear' || id === 'enter') { TS.mode = 'home'; }
+}
+
+/* ---------- mode screen ---------- */
+const MODE30 = [
+  { opts: ['DEG', 'RAD', 'GRAD'], get: () => ['DEGREE', 'RADIAN', 'GRAD'].indexOf(TS.settings.angle), set: i => TS.settings.angle = ['DEGREE', 'RADIAN', 'GRAD'][i] },
+  { opts: ['NORM', 'SCI', 'ENG'], get: () => ['NORM', 'SCI', 'ENG'].indexOf(TS.settings.notation), set: i => TS.settings.notation = ['NORM', 'SCI', 'ENG'][i] },
+  { opts: ['FLOAT', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], tight: true, get: () => TS.settings.fix + 1, set: i => TS.settings.fix = i - 1 },
+  { opts: ['MATHPRINT'], get: () => 0, set: () => {} }
+];
+function modeKey30(id) {
+  const m = TS.modeS, row = MODE30[m.row];
+  if (id === 'up') { m.row = Math.max(0, m.row - 1); m.col = MODE30[m.row].get(); }
+  else if (id === 'down') { m.row = Math.min(MODE30.length - 1, m.row + 1); m.col = MODE30[m.row].get(); }
+  else if (id === 'left') m.col = Math.max(0, m.col - 1);
+  else if (id === 'right') m.col = Math.min(row.opts.length - 1, m.col + 1);
+  else if (id === 'enter') row.set(m.col);
+  else if (id === 'clear') TS.mode = 'home';
+}
+
+/* ---------- key mapping ---------- */
+function keyTok30(id, s2) {
+  if (/^[0-9]$/.test(id) && !s2) return id;
+  const N1 = { dot: '.', neg: '⁻', add: '+', sub: '-', mul: '*', div: '/', lp: '(', rp: ')', pi: 'π', nd: '/' };
+  if (!s2 && N1[id]) return N1[id];
+  if (s2 && id === 'neg') return 'Ans';
+  if (s2 && id === 'dot') return ',';
+  return null;
+}
+function editKey30(id, s2, wasVar) {
+  const E = ed30(); const home = TS.mode === 'home';
+  if (home && TS.hsel !== null && !['up', 'down', 'enter', 'clear', 'tog'].includes(id)) TS.hsel = null;
+  if (!s2) {
+    if (/^[0-9]$/.test(id)) return put(E, id);
+    const simple = { dot: '.', neg: '⁻', add: '+', sub: '-', mul: '*', div: '/', lp: '(', rp: ')', pi: 'π', inv: '⁻¹', log: 'log(', ln: 'ln(', sto: '→' };
+    if (simple[id]) return put(E, simple[id]);
+    switch (id) {
+      case 'sin': case 'cos': case 'tan': put(E, id + (TS.hyp ? 'h' : '') + '('); TS.hyp = false; return;
+      case 'pow': return putTpl(E, { k: 'pow', a: [] }, true, true);
+      case 'sq': return putTpl(E, { k: 'pow', a: [tk30('2')] }, false, true);
+      case 'nd': return putTpl(E, { k: 'frac', a: [], b: [] }, true);
+      case 'sci': return putTpl(E, { k: 'sci', a: [] }, true);
+      case 'var': {
+        const s = curSeq(E), prev = s[E.pos - 1];
+        if (wasVar && prev && prev.k === 't' && VARS30.includes(prev.v)) prev.v = VARS30[(VARS30.indexOf(prev.v) + 1) % VARS30.length];
+        else put(E, 'X');
+        TS.lastVar = true; return;
+      }
+      case 'tog': if (home) toggle30(); return;
+      case 'left': return mvLeft(E);
+      case 'right': return mvRight(E);
+      case 'del': return del30(E);
+      case 'up': case 'down': {
+        if (mvVert(E, id === 'up' ? -1 : 1)) return;
+        if (!home) return;
+        const sel = sel30(); if (!sel.length) return;
+        if (id === 'up') TS.hsel = TS.hsel === null ? 0 : Math.min(TS.hsel + 1, sel.length - 1);
+        else TS.hsel = TS.hsel === null ? null : (TS.hsel === 0 ? null : TS.hsel - 1);
+        return;
+      }
+      case 'clear':
+        if (home && TS.hsel !== null) { TS.hsel = null; return; }
+        if (E.root.length) clearEd(E); else if (home) TS.hist = []; else TS.mode = 'home';
+        return;
+      case 'enter':
+        if (!home) { if (!E.root.length) return; open30Form('TABLE SETUP', [{ k: 'start', l: 'Start=', def: '0' }, { k: 'step', l: 'Step=', def: '1' }, ch3('auto', 'Indpnt:', ['Auto', 'Ask-x'])], V => { flat(E.root); TS.tbl = { start: V.n('start'), step: V.n('step'), top: 0, sel: 0 }; return null; }); return; }
+        if (TS.hsel !== null) {
+          const it = sel30()[TS.hsel], h = TS.hist[it.hi]; TS.hsel = null;
+          if (it.part === 'e') putItems(E, clone(h.e)); else if (h.v !== null) putItems(E, numItems(h.v));
+          return;
+        }
+        return enter30();
+      case 'table': if (home) { TS.mode = 'fx'; } return;
+      case 'prb': return open30Menu('prb');
+      case 'data': return openData30();
+      case 'mode': TS.modeS = { row: 0, col: MODE30[0].get() }; TS.mode = 'modeS'; return;
+    }
+    return;
+  }
+  switch (id) {
+    case 'log': return putTpl(E, { k: 'tenpow', a: [] }, true);
+    case 'ln': return putTpl(E, { k: 'epow', a: [] }, true);
+    case 'nd': return putTpl(E, { k: 'mixed', w: [], a: [], b: [] }, true);
+    case 'sq': return putTpl(E, { k: 'sqrt', a: [] }, true);
+    case 'pow': return putTpl(E, { k: 'root', i: [], a: [] }, true);
+    case 'sin': case 'cos': case 'tan': put(E, id + (TS.hyp ? 'h' : '') + '⁻¹('); TS.hyp = false; return;
+    case 'pi': TS.hyp = !TS.hyp; return;
+    case 'lp': return put(E, '%');
+    case 'rp': return put(E, '►%');
+    case 'tog': return put(E, '►F◄►D');
+    case 'table': return put(E, '►n/d◄►Un/d');
+    case 'neg': return put(E, 'Ans');
+    case 'dot': return put(E, ',');
+    case 'prb': return open30Menu('angle');
+    case 'data': return open30Menu('stat');
+    case 'sto': return open30Menu('recall');
+    case 'var': return open30Menu('clrvar');
+    case '0': return open30Menu('reset');
+    case 'div': return na30('K (constant)');
+    case 'left': { const s = curSeq(E); E.pos = 0; return; }
+    case 'right': { E.pos = curSeq(E).length; return; }
+  }
+}
+function press30(id) {
+  if (TS.mode === 'off') { if (id === 'on') { TS.mode = 'home'; TS.shift = null; } render30(); return; }
+  if (id === '2nd') { TS.shift = TS.shift ? null : '2nd'; render30(); return; }
+  const s2 = TS.shift === '2nd'; TS.shift = null;
+  const wasVar = TS.lastVar; TS.lastVar = false;
+  try { dispatch30(id, s2, wasVar); }
+  catch (e) { if (!(e instanceof CalcError)) throw e; TS.errS = { code: e.code, back: TS.mode === 'fx' ? 'fx' : 'home' }; TS.mode = 'error'; }
+  render30(); save30();
+}
+function dispatch30(id, s2, wasVar) {
+  const m = TS.mode;
+  if (s2 && id === 'mode') { if (m === 'data' && TS.se && TS.se.ed) seCommit30(); TS.mode = 'home'; TS.menu = TS.form = TS.res = null; TS.hsel = null; return; }
+  if (s2 && id === 'on') { TS.mode = 'off'; return; }
+  if (id === 'on') return;
+  if (m === 'msg') { TS.msg = null; TS.mode = TS.ret === 'data' && TS.se ? 'data' : (TS.ret === 'fx' ? 'fx' : 'home'); return; }
+  if (m === 'error') { const b = TS.errS.back; TS.errS = null; TS.mode = b === 'form' && TS.form ? 'form' : b === 'data' && TS.se ? 'data' : b === 'fx' ? 'fx' : 'home'; return; }
+  if (m === 'menu') { if (s2 && id === 'data') { TS.menu = null; TS.mode = TS.ret; open30Menu('stat'); return; } if (!s2 && id === 'prb') { TS.menu = null; TS.mode = TS.ret; open30Menu('prb'); return; } return menuKey30(id, s2); }
+  if (m === 'form') return formKey30(id, s2);
+  if (m === 'result') return resultKey30(id);
+  if (m === 'modeS') return modeKey30(id);
+  if (m === 'table') return tableKey30(id);
+  if (m === 'data') { if (s2 && id === 'data') { open30Menu('stat'); return; } return dataKey30(id, s2); }
+  editKey30(id, s2, wasVar);
+}
+
+/* ---------- rendering ---------- */
+const scr30 = document.getElementById('scr30'), lcd30 = document.getElementById('lcd30');
+function grid30(rows) { while (rows.length < R30) rows.push([]); return '<div class="g30">' + rows.slice(0, R30).map(r => rowHTML(r, C30)).join('') + '</div>'; }
+function cur30cell(base) { return TS.shift === '2nd' ? { ch: '↑', ks: true } : { ch: base || ' ', k: true }; }
+function edCells30(e, active) {
+  const cells = [];
+  e.t.forEach((t, i) => { const cs = cellsOf(dtok(t)); if (active && i === e.c) cs[0] = cur30cell(cs[0].ch); cells.push(...cs); });
+  if (active && e.c >= e.t.length) cells.push(cur30cell(' '));
+  return cells;
+}
+function fit30(cells, room) { return cells.length > room ? cells.slice(cells.length - room) : cells; }
+function render30() {
+  const st = TS.settings;
+  document.getElementById('st30').textContent = { DEGREE: 'DEG', RADIAN: 'RAD', GRAD: 'GRAD' }[st.angle] + (st.notation !== 'NORM' ? ' ' + st.notation : '') + (st.fix >= 0 ? ' FIX' + st.fix : '');
+  const ind = document.getElementById('ind30');
+  ind.textContent = (TS.hyp ? 'HYP ' : '') + (TS.shift === '2nd' ? '2ND' : '');
+  ind.className = 'ind' + (TS.shift === '2nd' ? ' s2' : '');
+  lcd30.classList.toggle('off', TS.mode === 'off');
+  let h = '';
+  switch (TS.mode) {
+    case 'home': case 'fx': h = home30(); break;
+    case 'menu': {
+      const m = TS.menu, rows = []; const tr = [];
+      m.tabs.forEach((t, i) => { if (i) tr.push({ ch: ' ' }); tr.push(...cellsOf(t.name, i === m.tab ? { i: true } : null)); }); rows.push(tr);
+      const items = m.tabs[m.tab].items;
+      for (let k = 0; k < 3; k++) { const idx = m.top + k; if (idx >= items.length) { rows.push([]); continue; } let sep = ':'; if (k === 2 && idx < items.length - 1) sep = '↓'; if (k === 0 && m.top > 0) sep = '↑'; rows.push(cellsOf(idxChar(idx) + sep, idx === m.sel ? { i: true } : null).concat(cellsOf(items[idx].label))); }
+      h = grid30(rows); break;
+    }
+    case 'form': {
+      const f = TS.form, rows = [cellsOf(f.title)], fr = formRows30();
+      fr.slice(f.top, f.top + 3).forEach((row, j) => {
+        const foc = f.top + j === f.foc;
+        if (row.type === 'calc') { const cs = cellsOf('CALC'); if (foc) cs[0] = { ...cs[0], k: true }; rows.push(cs); return; }
+        const r = cellsOf(row.l);
+        if (row.type === 'choice') { row.opts.forEach((o, i) => { if (i) r.push({ ch: ' ' }); const cs = cellsOf(o, row.v === i ? { i: true } : null); if (foc && i === f.oc) cs[0] = { ...cs[0], k: true }; r.push(...cs); }); rows.push(r); return; }
+        rows.push(r.concat(fit30(edCells30(row.v, foc), C30 - r.length)));
+      });
+      h = grid30(rows); break;
+    }
+    case 'result': {
+      const R = TS.res, rows = []; if (R.title) rows.push(cellsOf(R.title)); const vis = R.title ? 3 : 4;
+      R.items.slice(R.top, R.top + vis).forEach((it, j) => {
+        const idx = R.top + j, sel = idx === R.sel && typeof it.v === 'number';
+        const head = R.numbered ? cellsOf(idxChar(idx) + ':', sel ? { i: true } : null) : [];
+        const body = cellsOf(it.label + (it.txt === '' && typeof it.v !== 'number' ? '' : '=') + it.txt, (!R.numbered && sel) ? null : null);
+        let row = head.concat(body); if (row.length > C30) row = row.slice(0, C30 - 1).concat([{ ch: '…' }]); rows.push(row);
+      });
+      if (R.top + vis < R.items.length) { const last = padRow(rows[rows.length - 1] || [], C30); last[C30 - 1] = { ch: '↓' }; rows[rows.length - 1] = last; }
+      h = grid30(rows); break;
+    }
+    case 'data': {
+      const se = TS.se, W = [5, 5, 4], rows = [];
+      const cellTxt = (s, w) => { let c = cellsOf(s); while (c.length < w) c.push({ ch: ' ' }); return c.slice(0, w); };
+      const head = []; for (let j = 0; j < 3; j++) { if (j) head.push({ ch: '│' }); const nm = 'L' + (j + 1); const pad = Math.floor((W[j] - 2) / 2); head.push(...cellTxt(' '.repeat(pad) + nm, W[j]).map(c => se.row === 0 && se.col === j ? { ...c, i: true } : c)); }
+      rows.push(head);
+      for (let k = 0; k < 2; k++) {
+        const ri = se.top + k, r = [];
+        for (let j = 0; j < 3; j++) { if (j) r.push({ ch: '│' }); const Ls = S.lists['L' + (j + 1)]; const txt = ri <= Ls.length ? ctx30(() => fitNum(Ls[ri - 1], W[j])) : ''; r.push(...cellTxt(txt, W[j]).map(c => se.row === ri && se.col === j ? { ...c, i: true } : c)); }
+        rows.push(r);
+      }
+      const nm = 'L' + (se.col + 1); let bot = cellsOf(se.row === 0 ? nm + '=' : nm + '(' + se.row + ')=');
+      if (se.ed) bot = bot.concat(fit30(edCells30(se.ed, true), C30 - bot.length));
+      else if (se.row > 0) { const v = S.lists[nm][se.row - 1]; bot = bot.concat(fit30(cellsOf(v === undefined ? '' : ctx30(() => fmt(v))), C30 - bot.length)); }
+      rows.push(bot); h = grid30(rows); break;
+    }
+    case 'table': {
+      const t = TS.tbl, rows = [cellsOf(' x    │ f(x)')];
+      let ast = null; try { ast = parseTokens(flat(TS.ef.root)); } catch (e) { /* shown as ERROR */ }
+      for (let k = 0; k < 3; k++) {
+        const x = +(t.start + (t.top + k) * t.step).toPrecision(12); let y;
+        try { y = ctx30(() => fmt(num(plain(ev(ast, { X: x }))))); } catch (e) { y = 'ERROR'; }
+        let xs = ctx30(() => fitNum(x, 6)); let xc = cellsOf(' ' + xs); while (xc.length < 6) xc.push({ ch: ' ' }); xc = xc.slice(0, 6);
+        if (k === t.sel) xc = xc.map(c => ({ ...c, i: true }));
+        let yc = cellsOf(' ' + y); if (yc.length > 9) yc = yc.slice(0, 9);
+        rows.push(xc.concat([{ ch: '│' }], yc));
+      }
+      h = grid30(rows); break;
+    }
+    case 'modeS': {
+      const m = TS.modeS, rows = MODE30.map((row, ri) => {
+        const cur = row.get(), r = [];
+        row.opts.forEach((o, i) => { if (i && !(row.tight && i > 1)) r.push({ ch: ' ' }); const cs = cellsOf(o, i === cur ? { i: true } : null); if (ri === m.row && i === m.col) cs[0] = { ...cs[0], k: true }; r.push(...cs); });
+        return r;
+      });
+      h = grid30(rows); break;
+    }
+    case 'error': {
+      const e = TS.errS; const help = wrapWords(ERR_HELP[e.code] || '', C30);
+      h = grid30([cellsOf(e.code.length > 10 ? e.code : e.code + ' ERROR'), ...help.slice(0, 2).map(l => cellsOf(l)), cellsOf('Press clear')]); break;
+    }
+    case 'msg': h = grid30(TS.msg.map(l => cellsOf(l))); break;
+    case 'off': h = ''; break;
+  }
+  scr30.innerHTML = h;
+  scroll30(); requestAnimationFrame(scroll30);
+}
+function scroll30() {
+  if (TS.mode === 'home' || TS.mode === 'fx') {
+    const sel = scr30.querySelector('.sel');
+    if (sel) scr30.scrollTop = Math.max(0, sel.offsetTop - 4); else scr30.scrollTop = scr30.scrollHeight;
+  } else scr30.scrollTop = 0;
+}
+if (window.ResizeObserver) new ResizeObserver(() => scroll30()).observe(scr30);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => scroll30());
+function home30() {
+  if (TS.mode === 'fx') {
+    const E = TS.ef;
+    return '<div class="l30 hdr">f(x)=</div><div class="l30 e">' + seqH(E.root, { seq: curSeq(E), pos: E.pos }, true) + '</div><div class="l30 note">enter: table setup</div>';
+  }
+  let h = ''; const sel = sel30(), want = TS.hsel !== null ? sel[TS.hsel] : null;
+  TS.hist.forEach((e, i) => {
+    const sE = want && want.hi === i && want.part === 'e', sR = want && want.hi === i && want.part === 'r';
+    h += '<div class="l30 e"><span' + (sE ? ' class="sel"' : '') + '>' + seqH(e.e, null, true) + '</span></div>';
+    h += '<div class="l30 r"><span' + (sR ? ' class="sel"' : '') + '>' + e.forms[e.fi] + '</span></div>';
+  });
+  const E = TS.eh;
+  h += '<div class="l30 e">' + seqH(E.root, TS.hsel === null ? { seq: curSeq(E), pos: E.pos } : null, true) + '</div>';
+  return h;
+}
+
+/* ---------- persistence ---------- */
+const STORE30 = 'pioneer-calc30-v1';
+function save30() { try { localStorage.setItem(STORE30, JSON.stringify({ settings: TS.settings, vars: TS.vars, ans: TS.ans, hist: TS.hist.slice(-15), lastStat: TS.lastStat })); } catch (e) { /* ignore */ } save(); }
+function load30() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STORE30) || 'null'); if (!d) return;
+    Object.assign(TS.settings, d.settings || {}); TS.vars = d.vars || {}; TS.ans = d.ans ?? 0;
+    TS.hist = isList(d.hist) ? d.hist.filter(h => h && isList(h.e) && isList(h.forms)) : []; TS.lastStat = d.lastStat || null;
+  } catch (e) { /* ignore */ }
+}
+function reset30() { TS.settings = { angle: 'DEGREE', notation: 'NORM', fix: -1 }; TS.vars = {}; TS.ans = 0; TS.hist = []; TS.lastStat = null; clearEd(TS.eh); clearEd(TS.ef); ['L1', 'L2', 'L3'].forEach(l => S.lists[l] = []); }
+
+/* ---------- keypad ---------- */
+const LAYOUT30 = [
+  [['2nd', '2nd', '', 'second'], ['mode', 'mode', 'quit'], ['del', 'delete', 'insert', 'small'], 'DPAD'],
+  [['log', 'log', '10ˣ'], ['prb', 'prb', 'angle'], ['data', 'data', 'stat-reg/distr', 'small']],
+  [['ln', 'ln', 'eˣ'], ['nd', 'n/d', 'Un/d'], ['tog', '◄ ►', 'f◄►d'], ['table', 'table', 'n/d◄►Un/d', 'small'], ['clear', 'clear', '']],
+  [['pi', 'π', 'hyp'], ['sin', 'sin', 'sin⁻¹'], ['cos', 'cos', 'cos⁻¹'], ['tan', 'tan', 'tan⁻¹'], ['pow', '^', 'ˣ√', 'op']],
+  [['inv', 'x⁻¹', ''], ['sci', '×10ⁿ', '', 'small'], ['lp', '(', '%'], ['rp', ')', '►%'], ['div', '÷', 'K', 'op']],
+  [['sq', 'x²', '√'], ['7', '7', '', 'num'], ['8', '8', '', 'num'], ['9', '9', '', 'num'], ['mul', '×', '', 'op']],
+  [['var', 'x yzt abc', 'clear var', 'tiny'], ['4', '4', '', 'num'], ['5', '5', '', 'num'], ['6', '6', '', 'num'], ['sub', '−', '', 'op']],
+  [['sto', 'sto→', 'recall', 'small'], ['1', '1', '', 'num'], ['2', '2', '', 'num'], ['3', '3', '', 'num'], ['add', '+', '', 'op']],
+  [['on', 'on', 'off'], ['0', '0', 'reset', 'num'], ['dot', '.', ',', 'num'], ['neg', '(−)', 'ans', 'num'], ['enter', 'enter', '', 'op enter']]
+];
+const pad30 = document.getElementById('pad30'), keyButtons30 = {};
+LAYOUT30.forEach(row => row.forEach(k => {
+  if (k === 'DPAD') {
+    const d = document.createElement('div'); d.className = 'dpad';
+    d.innerHTML = '<div class="ring"></div>' + [['up', '▲'], ['left', '◀'], ['right', '▶'], ['down', '▼']].map(([id, s]) => '<button type="button" class="' + id + '" data-k="' + id + '" aria-label="' + id + ' arrow">' + s + '</button>').join('');
+    pad30.appendChild(d); return;
+  }
+  const [id, main, l2, cls] = k;
+  const el = document.createElement('div'); el.className = 'k ' + (cls || '');
+  el.innerHTML = '<div class="lab"><span class="l2">' + esc(l2) + '</span></div><button type="button" data-k="' + id + '" aria-label="' + esc(main) + '">' + esc(main) + '</button>';
+  pad30.appendChild(el);
+}));
+pad30.querySelectorAll('button[data-k]').forEach(b => { keyButtons30[b.dataset.k] = b; });
+pad30.addEventListener('click', e => { const b = e.target.closest('button[data-k]'); if (!b) return; press30(b.dataset.k); });
+
+/* ---------- model switch ---------- */
+let MODEL = '84';
+function activate(m) {
+  MODEL = m === '30' ? '30' : '84';
+  document.body.dataset.model = MODEL;
+  document.getElementById('calc').classList.toggle('is-active', MODEL === '84');
+  document.getElementById('calc30').classList.toggle('is-active', MODEL === '30');
+  document.querySelectorAll('.model-switch button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.model === MODEL)));
+  try { localStorage.setItem('pioneer-model', MODEL); } catch (e) { /* ignore */ }
+}
+function setModel(m) {
+  activate(m);
+  document.getElementById('calc').hidden = MODEL !== '84';
+  document.getElementById('calc30').hidden = MODEL !== '30';
+  render(); render30();
+}
+/* on wide screens both are visible: whichever one you touch gets the keyboard */
+document.getElementById('calc').addEventListener('pointerdown', () => { if (MODEL !== '84') activate('84'); });
+document.getElementById('calc30').addEventListener('pointerdown', () => { if (MODEL !== '30') activate('30'); });
+document.querySelectorAll('.model-switch button').forEach(b => b.addEventListener('click', () => { setModel(b.dataset.model); history.replaceState(null, '', '#' + (MODEL === '30' ? 'ti30' : 'ti84')); }));
+
+load(); load30();
+(() => { let m = '84'; try { m = localStorage.getItem('pioneer-model') || '84'; } catch (e) { /* ignore */ }
+  if (location.hash === '#ti30') m = '30'; else if (location.hash === '#ti84') m = '84'; setModel(m); })();
 
 /* test hook (used for automated checks; harmless for students) */
-window.__pioneer = { S, press, run: s => { const r = execute(tokenizeText(s)); return r && r.lines ? r.lines : show(r); }, tokenizeText, fmt, TESTS, render };
+window.__pioneer = { S, T: TS, press, press30, setModel, run: s => { const r = execute(tokenizeText(s)); return r && r.lines ? r.lines : show(r); }, tokenizeText, fmt, TESTS, render };
 })();
 </script>
 </body>
