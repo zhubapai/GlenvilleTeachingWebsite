@@ -84,6 +84,8 @@
 .c { display: inline-block; width: .6em; text-align: center; vertical-align: top; height: 1.17em; }
 .c.i { background: var(--lcd-ink); color: var(--lcd); }
 .c.cb { animation: blink 1.06s steps(1) infinite; }
+.c.u { box-shadow: inset 0 -.13em 0 0 currentColor; animation: ublink 1.06s steps(1) infinite; }
+@keyframes ublink { 0% { box-shadow: inset 0 -.13em 0 0 currentColor; } 70% { box-shadow: none; } }
 .c.ks { background: var(--lcd-ink); color: var(--lcd); font-size: .82em; font-weight: 700; }
 @keyframes blink { 0% { background: var(--lcd-ink); color: var(--lcd); } 50% { background: transparent; color: inherit; } }
 .lcd canvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: none; }
@@ -1617,7 +1619,7 @@ function editorCells(e, active) {
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 function rowHTML(r, w = COLS) {
   return '<div class="lcd-row">' + padRow(r, w).map(c => {
-    const cl = 'c' + (c.i ? ' i' : '') + (c.k ? ' cb' : '') + (c.ks ? ' ks' : '');
+    const cl = 'c' + (c.i ? ' i' : '') + (c.k ? ' cb' : '') + (c.ks ? ' ks' : '') + (c.u ? ' u' : '');
     return '<span class="' + cl + '">' + (c.ch === ' ' ? '&nbsp;' : esc(c.ch)) + '</span>';
   }).join('') + '</div>';
 }
@@ -1657,12 +1659,12 @@ function renderForm() {
   fr.slice(f.top, f.top + 9).forEach((row, j) => {
     const idx = f.top + j, foc = idx === f.foc;
     if (row.type === 'act') {
-      const r = []; f.def.acts.forEach((a, i) => { if (i) r.push({ ch: ' ' }); const cs = cellsOf(a); if (foc && i === f.act) { cs[0] = { ...cs[0], k: true }; cs.forEach(c => c.i = !c.k ? true : undefined); } r.push(...cs); });
+      const r = []; f.def.acts.forEach((a, i) => { if (i) r.push({ ch: ' ' }); const cs = cellsOf(a); if (foc && i === f.act) cs.forEach((c, j) => { cs[j] = { ...c, u: true }; }); r.push(...cs); });
       rows.push(r); return;
     }
     const r = cellsOf(row.l);
     if (row.type === 'choice') {
-      row.opts.forEach((o, i) => { if (i) r.push({ ch: ' ' }); const cs = cellsOf(o, f.v[row.k] === i ? { i: true } : null); if (foc && i === f.oc) cs[0] = { ...cs[0], k: !(f.v[row.k] === i), i: f.v[row.k] === i ? true : undefined, ...(f.v[row.k] === i ? { k: true } : {}) }; r.push(...cs); });
+      row.opts.forEach((o, i) => { if (i) r.push({ ch: ' ' }); const cs = cellsOf(o, f.v[row.k] === i ? { i: true } : null); if (foc && i === f.oc) cs.forEach((c, j) => { cs[j] = { ...c, u: true }; }); r.push(...cs); });
       rows.push(r); return;
     }
     let vc = editorCells(f.v[row.k], foc);
@@ -1717,7 +1719,7 @@ function renderModeS() {
   const m = S.modeS, rows = [];
   MODE_ROWS.forEach((row, ri) => {
     const r = row.label ? cellsOf(row.label) : []; const cur = row.get();
-    const opts = []; row.opts.forEach((o, i) => { if (i) opts.push({ ch: ' ' }); const cs = cellsOf(o, i === cur ? { i: true } : null); if (ri === m.row && i === m.col) cs[0] = { ...cs[0], k: true }; opts.push(...cs); });
+    const opts = []; row.opts.forEach((o, i) => { if (i) opts.push({ ch: ' ' }); const cs = cellsOf(o, i === cur ? { i: true } : null); if (ri === m.row && i === m.col) cs.forEach((c, j) => { cs[j] = { ...c, u: true }; }); opts.push(...cs); });
     rows.push(row.label ? r.concat([{ ch: ' ' }], opts) : opts);
   });
   rows.push([]); rows.push(cellsOf('↑↓ to choose a row,')); rows.push(cellsOf('←→ then ENTER to set.'));
@@ -2431,9 +2433,9 @@ function render30() {
       const f = TS.form, rows = [cellsOf(f.title)], fr = formRows30();
       fr.slice(f.top, f.top + 3).forEach((row, j) => {
         const foc = f.top + j === f.foc;
-        if (row.type === 'calc') { const cs = cellsOf('CALC'); if (foc) cs[0] = { ...cs[0], k: true }; rows.push(cs); return; }
+        if (row.type === 'calc') { const cs = cellsOf('CALC'); if (foc) cs.forEach((c, j) => { cs[j] = { ...c, u: true }; }); rows.push(cs); return; }
         const r = cellsOf(row.l);
-        if (row.type === 'choice') { row.opts.forEach((o, i) => { if (i) r.push({ ch: ' ' }); const cs = cellsOf(o, row.v === i ? { i: true } : null); if (foc && i === f.oc) cs[0] = { ...cs[0], k: true }; r.push(...cs); }); rows.push(r); return; }
+        if (row.type === 'choice') { row.opts.forEach((o, i) => { if (i) r.push({ ch: ' ' }); const cs = cellsOf(o, row.v === i ? { i: true } : null); if (foc && i === f.oc) cs.forEach((c, j) => { cs[j] = { ...c, u: true }; }); r.push(...cs); }); rows.push(r); return; }
         rows.push(r.concat(fit30(edCells30(row.v, foc), C30 - r.length)));
       });
       h = grid30(rows); break;
@@ -2480,7 +2482,7 @@ function render30() {
     case 'modeS': {
       const m = TS.modeS, rows = MODE30.map((row, ri) => {
         const cur = row.get(), r = [];
-        row.opts.forEach((o, i) => { if (i && !(row.tight && i > 1)) r.push({ ch: ' ' }); const cs = cellsOf(o, i === cur ? { i: true } : null); if (ri === m.row && i === m.col) cs[0] = { ...cs[0], k: true }; r.push(...cs); });
+        row.opts.forEach((o, i) => { if (i && !(row.tight && i > 1)) r.push({ ch: ' ' }); const cs = cellsOf(o, i === cur ? { i: true } : null); if (ri === m.row && i === m.col) cs.forEach((c, j) => { cs[j] = { ...c, u: true }; }); r.push(...cs); });
         return r;
       });
       h = grid30(rows); break;
