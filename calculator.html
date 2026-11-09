@@ -15,23 +15,23 @@
 <link rel="shortcut icon" href="assets/favicon.ico">
 <style>
 /* ── Pioneer Calc ── */
-.calc-page { max-width: 1000px; margin: 0 auto; padding: 32px 28px 64px; }
+.calc-page { max-width: 1240px; margin: 0 auto; padding: 32px 28px 64px; }
 .calc-head { max-width: 760px; margin-bottom: 22px; }
 .calc-head .eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
 .calc-head h1 { font-size: 2.1rem; letter-spacing: -.01em; }
 .calc-head .lede { color: var(--ink-soft); margin-top: 10px; }
-.calc-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+.calc-pair { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; align-items: start; }
 .calc-cap { font: 600 .95rem 'Inter', sans-serif; color: var(--ink); text-align: center; margin-bottom: 10px; }
 .calc-cap span { display: block; font-weight: 500; font-size: .76rem; color: var(--ink-muted); }
 .switch-label { display: none; font: 600 .82rem 'Inter', sans-serif; color: var(--ink-soft); text-align: center; margin-bottom: 6px; }
 .calc.is-active { box-shadow: 0 0 0 3px var(--gold), 0 24px 48px -18px rgba(20,30,55,.55); }
 .calc-info { margin-top: 40px; }
-.ref-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; align-items: start; }
+.ref-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 22px; align-items: start; }
 /* wide screens: both calculators side by side, no switch */
 @media (min-width: 881px) {
   .model-switch, .switch-label { display: none !important; }
-  #calc[hidden], #calc30[hidden] { display: block; }
-  body .only84, body .only30 { display: block !important; }
+  #calc[hidden], #calc30[hidden], #calcX[hidden] { display: block; }
+  body .only84, body .only30, body .onlyxi { display: block !important; }
 }
 /* phones and narrow windows: one calculator at a time, with the switch */
 @media (max-width: 880px) {
@@ -135,13 +135,13 @@
 }
 
 /* model switch */
-.model-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; max-width: 410px; margin: 0 auto 16px; padding: 5px; background: var(--paper-raised); border: 2px solid var(--accent); border-radius: 14px; box-shadow: 0 4px 14px -6px rgba(20,30,55,.35); }
+.model-switch { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; max-width: 410px; margin: 0 auto 16px; padding: 5px; background: var(--paper-raised); border: 2px solid var(--accent); border-radius: 14px; box-shadow: 0 4px 14px -6px rgba(20,30,55,.35); }
 .model-switch button { font: 600 .84rem 'Inter', sans-serif; color: var(--ink-soft); background: transparent; border: 0; border-radius: 10px; padding: 8px 6px 7px; cursor: pointer; line-height: 1.25; }
 .model-switch button small { display: block; font-weight: 500; font-size: .7rem; color: var(--ink-muted); }
 .model-switch button[aria-pressed="true"] { background: var(--accent); color: #fff; }
 .model-switch button[aria-pressed="true"] small { color: #c9d6ee; }
 .model-switch button:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
-body[data-model="30"] .only84, body:not([data-model="30"]) .only30 { display: none; }
+body:not([data-model="84"]) .only84, body:not([data-model="30"]) .only30, body:not([data-model="xi"]) .onlyxi { display: none; }
 
 /* TI-30XS style */
 .calc30 { --body: #213a63; --body-2: #1a2f52; --key-fn: #2f4b78; --key-fn-2: #29426a; --key-op: #4d6aa0; }
@@ -167,6 +167,14 @@ body[data-model="30"] .only84, body:not([data-model="30"]) .only30 { display: no
 .pad30 .k button { text-transform: none; }
 .k.tiny button { font-size: 9.5px; letter-spacing: -.02em; }
 .pad30 .lab { justify-content: flex-start; }
+
+/* TI-30XIIS style */
+.calcX { --body: #3a2f5c; --body-2: #2f264c; --key-fn: #4a3d73; --key-fn-2: #41356a; --key-op: #6a5a9e; }
+.scrX { font-size: calc(100cqw / 16 / 0.6); line-height: 1.25; height: 2.6em; overflow: hidden; }
+.scrX .g30 .lcd-row, .scrX .g30 .c { height: 1.25em; line-height: 1.25em; }
+.padX .lab { justify-content: flex-start; }
+@media (min-width: 881px) and (max-width: 1180px) { .calc-pair, .ref-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 881px) { .calc .lab { font-size: 7.5px; } .k button { font-size: 12px; } .k.num button { font-size: 15px; } .k.tiny button { font-size: 8.5px; } }
 
 /* side panel */
 .calc-info h1 { font-size: 2.1rem; letter-spacing: -.01em; }
@@ -208,14 +216,15 @@ body[data-model="30"] .only84, body:not([data-model="30"]) .only30 { display: no
   <header class="calc-head">
     <p class="eyebrow">Student Tools</p>
     <h1>Pioneer Calc</h1>
-    <p class="lede">Two free calculators that work like the ones students use: a <b>TI-84 Plus CE</b> (graphing and statistics) and a <b>TI-30XS MultiView</b> (scientific, with stacked fractions). Same keys, same menus, same answers, on a laptop or a phone.</p>
+    <p class="lede">Three free calculators that work like the ones students use: a <b>TI-84 Plus CE</b> (graphing and statistics), a <b>TI-30XS MultiView</b> (scientific, with stacked fractions), and a <b>TI-30XIIS</b> (two-line scientific). Same keys, same menus, same answers, on a laptop or a phone.</p>
   </header>
 
   <section class="calc-stage" aria-label="Calculators">
     <p class="switch-label">Choose a calculator:</p>
     <div class="model-switch" role="group" aria-label="Calculator model">
-      <button type="button" data-model="84" aria-pressed="true">TI-84 Plus CE style<small>graphing · stats</small></button>
-      <button type="button" data-model="30" aria-pressed="false">TI-30XS MultiView style<small>scientific · fractions</small></button>
+      <button type="button" data-model="84" aria-pressed="true">TI-84 Plus CE<small>graphing · stats</small></button>
+      <button type="button" data-model="30" aria-pressed="false">TI-30XS MultiView<small>4-line · stacked fractions</small></button>
+      <button type="button" data-model="xi" aria-pressed="false">TI-30XIIS<small>2-line scientific</small></button>
     </div>
     <div class="calc-pair">
       <div class="calc-col">
@@ -244,6 +253,19 @@ body[data-model="30"] .only84, body:not([data-model="30"]) .only30 { display: no
         </div>
         <div class="pad pad30" id="pad30"></div>
       </div>
+      </div>
+      <div class="calc-col">
+        <p class="calc-cap">TI-30XIIS style <span>2-line scientific</span></p>
+        <div class="calc calcX" id="calcX" hidden>
+          <div class="calc-brand"><b>PIONEER CALC 2L</b><span>Two-line style</span></div>
+          <div class="bezel">
+            <div class="lcd lcdX" id="lcdX" tabindex="0" aria-label="Two-line scientific calculator screen. Type with your keyboard or use the keys below." role="application">
+              <div class="lcd-status"><span id="stX">DEG</span><span class="ind" id="indX"></span></div>
+              <div class="scrX" id="scrX"></div>
+            </div>
+          </div>
+          <div class="pad padX" id="padX"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -288,6 +310,23 @@ body[data-model="30"] .only84, body:not([data-model="30"]) .only30 { display: no
         <tr><td>Degrees / radians, fix decimals</td><td><span class="kbd">mode</span></td></tr>
       </table>
     </div>
+    <div class="ref onlyxi">
+      <h2>TI-30XIIS style: where to find it</h2>
+      <table>
+        <tr><td>Fraction 3/4, mixed 2 1/3</td><td>3 <span class="kbd">A b/c</span> 4 &nbsp;·&nbsp; 2 <span class="kbd">A b/c</span> 1 <span class="kbd">A b/c</span> 3</td></tr>
+        <tr><td>Fraction ↔ decimal</td><td><span class="kbd k2">2nd</span> <span class="kbd">A b/c</span> (F◄►D), then <span class="kbd">=</span></td></tr>
+        <tr><td>Mixed ↔ improper</td><td><span class="kbd k2">2nd</span> <span class="kbd">x⁻¹</span>, then <span class="kbd">=</span></td></tr>
+        <tr><td>Previous entries</td><td><span class="kbd">▲</span> <span class="kbd">▼</span>, edit, <span class="kbd">=</span></td></tr>
+        <tr><td>Degrees / radians</td><td><span class="kbd">DRG</span>, <span class="kbd">◀</span><span class="kbd">▶</span>, <span class="kbd">=</span></td></tr>
+        <tr><td>Fix decimals / sci notation</td><td><span class="kbd k2">2nd</span> <span class="kbd">EE</span> (FIX) &nbsp;·&nbsp; <span class="kbd k2">2nd</span> <span class="kbd">,</span> (SCI/ENG)</td></tr>
+        <tr><td>Store in A–E</td><td><span class="kbd">STO▸</span>, pick a letter, <span class="kbd">=</span></td></tr>
+        <tr><td>nPr, nCr, !, random</td><td><span class="kbd">PRB</span></td></tr>
+        <tr><td>Start 1-var or 2-var stats</td><td><span class="kbd k2">2nd</span> <span class="kbd">DATA</span> (STAT) → 1-VAR / 2-VAR, <span class="kbd">=</span></td></tr>
+        <tr><td>Enter data</td><td><span class="kbd">DATA</span>, value <span class="kbd">▼</span> FRQ <span class="kbd">▼</span> … then <span class="kbd">=</span></td></tr>
+        <tr><td>Mean, Sx, a, b, r</td><td><span class="kbd">STATVAR</span>, <span class="kbd">◀</span><span class="kbd">▶</span></td></tr>
+        <tr><td>Clear data / leave stats</td><td><span class="kbd k2">2nd</span> <span class="kbd">DATA</span> → CLRDATA &nbsp;·&nbsp; <span class="kbd k2">2nd</span> <span class="kbd">STATVAR</span></td></tr>
+      </table>
+    </div>
     <div class="ref only84">
       <h2>TI-84 style: not included (yet)</h2>
       <p>Graphing (Y=, WINDOW, GRAPH, TABLE), matrices, complex numbers, and programs. Those keys show a short notice instead.</p>
@@ -295,6 +334,10 @@ body[data-model="30"] .only84, body:not([data-model="30"]) .only30 { display: no
     <div class="ref only30">
       <h2>TI-30XS style: not included (yet)</h2>
       <p>The constant feature (K), DMS minutes/seconds entry, list formulas, and CLASSIC display mode.</p>
+    <div class="ref onlyxi">
+      <h2>TI-30XIIS style: not included (yet)</h2>
+      <p>The constant feature (K), DRG► conversion, minutes/seconds entry, and the X′/Y′ predictions in STATVAR.</p>
+    </div>
     </div>
     </div>
     <div class="ref">
@@ -305,7 +348,7 @@ body[data-model="30"] .only84, body:not([data-model="30"]) .only30 { display: no
     <div class="calc-actions">
       <button class="btn-reset" id="reset" type="button">Reset calculator</button>
     </div>
-    <p class="fine">Pioneer Calc is an independent teaching tool written for Glenville State math courses. It is not affiliated with or endorsed by Texas Instruments. TI-84 Plus CE and TI-30XS MultiView are trademarks of Texas Instruments. Always check your course policy for which calculators are allowed on exams.</p>
+    <p class="fine">Pioneer Calc is an independent teaching tool written for Glenville State math courses. It is not affiliated with or endorsed by Texas Instruments. TI-84 Plus CE, TI-30XS MultiView, and TI-30XIIS are trademarks of Texas Instruments. Always check your course policy for which calculators are allowed on exams.</p>
   </section>
 </main>
 
@@ -814,7 +857,7 @@ function parseTokens(tk) {
   const P = () => tk[i];
   const at = t => tk[i] === t;
   const eat = t => { if (tk[i] === t) { i++; return true; } return false; };
-  const CONVS = ['►Frac', '►Dec', '►%', '►DMS', '►F◄►D', '►n/d◄►Un/d'];
+  const CONVS = ['►Frac', '►Dec', '►%', '►DMS', '►F◄►D', '►n/d◄►Un/d', '►Ab/c◄►d/e'];
   const closeP = c => { if (eat(c)) return; if (i >= tk.length || tk[i] === '→' || CONVS.includes(tk[i])) return; err('SYNTAX', i); };
   const startsPrimary = t => t !== undefined && (DIGIT.test(t) || t === '.' || t === 'ᴇ' || t === '(' || t === '{' || t === 'π' || t === 'e' || t === 'Ans' || t === 'rand' || LISTS.includes(t) || LETTERS.includes(t) || !!FN[t] || t === '⁻');
   function parseOr() { let a = parseAnd(); while (at(' or ') || at(' xor ')) { const op = tk[i++].trim(); a = { t: 'bin', op, a, b: parseAnd() }; } return a; }
@@ -1855,8 +1898,15 @@ document.addEventListener('keydown', e => {
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   const tgt = e.target; if (tgt && (tgt.tagName === 'INPUT' || tgt.tagName === 'TEXTAREA')) return;
   const ae = document.activeElement;
-  const inCalc = lcdEl.contains(ae) || pad.contains(ae) || lcd30.contains(ae) || pad30.contains(ae) || ae === document.body || (ae && ae.closest && ae.closest('.model-switch'));
+  const inCalc = lcdEl.contains(ae) || pad.contains(ae) || lcd30.contains(ae) || pad30.contains(ae) || lcdX.contains(ae) || padX.contains(ae) || ae === document.body || (ae && ae.closest && ae.closest('.model-switch'));
   if (!inCalc) return;
+  if (MODEL === 'xi') {
+    let idx = { ...KB, '/': 'div', '^': 'pow', 'Enter': 'eq', '=': 'eq' }[e.key];
+    if (e.key === '-') { const t = XS.ed.t, prev = XS.done ? null : t[XS.ed.c - 1]; idx = XS.mode === 'home' && (XS.done || !prev || /^[+\-*/^(,→]$/.test(prev) || prev.endsWith('(')) && XS.shift === null ? 'neg' : 'sub'; }
+    if (!idx) return; e.preventDefault(); if (ae && padX.contains(ae)) lcdX.focus({ preventScroll: true });
+    const b = keyButtonsX[idx]; if (b) { b.classList.add('down'); setTimeout(() => b.classList.remove('down'), 110); }
+    pressX(idx); return;
+  }
   if (MODEL === '30') {
     let id3 = { ...KB, '/': 'div', '^': 'pow' }[e.key];
     if (e.key === '-') { const E = ed30(); const sq = TS.mode === 'home' || TS.mode === 'fx' ? curSeq(E) : null; const prev = sq && E.pos > 0 ? sq[E.pos - 1] : null; id3 = sq && (!prev || (prev.k === 't' && /^[+\-*/^(,→]$/.test(prev.v)) || (prev && prev.k === 't' && prev.v.endsWith('('))) && TS.shift === null ? 'neg' : 'sub'; }
@@ -2562,31 +2612,362 @@ pad30.addEventListener('click', e => { const b = e.target.closest('button[data-k
 
 /* ---------- model switch ---------- */
 let MODEL = '84';
+const CALC_IDS = { '84': 'calc', '30': 'calc30', 'xi': 'calcX' };
 function activate(m) {
-  MODEL = m === '30' ? '30' : '84';
+  MODEL = CALC_IDS[m] ? m : '84';
   document.body.dataset.model = MODEL;
-  document.getElementById('calc').classList.toggle('is-active', MODEL === '84');
-  document.getElementById('calc30').classList.toggle('is-active', MODEL === '30');
+  Object.entries(CALC_IDS).forEach(([k, id]) => document.getElementById(id).classList.toggle('is-active', MODEL === k));
   document.querySelectorAll('.model-switch button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.model === MODEL)));
   try { localStorage.setItem('pioneer-model', MODEL); } catch (e) { /* ignore */ }
 }
 function setModel(m) {
   activate(m);
-  document.getElementById('calc').hidden = MODEL !== '84';
-  document.getElementById('calc30').hidden = MODEL !== '30';
-  render(); render30();
+  Object.entries(CALC_IDS).forEach(([k, id]) => { document.getElementById(id).hidden = MODEL !== k; });
+  render(); render30(); renderX();
 }
 /* on wide screens both are visible: whichever one you touch gets the keyboard */
 document.getElementById('calc').addEventListener('pointerdown', () => { if (MODEL !== '84') activate('84'); });
 document.getElementById('calc30').addEventListener('pointerdown', () => { if (MODEL !== '30') activate('30'); });
-document.querySelectorAll('.model-switch button').forEach(b => b.addEventListener('click', () => { setModel(b.dataset.model); history.replaceState(null, '', '#' + (MODEL === '30' ? 'ti30' : 'ti84')); }));
+document.getElementById('calcX').addEventListener('pointerdown', () => { if (MODEL !== 'xi') activate('xi'); });
+document.querySelectorAll('.model-switch button').forEach(b => b.addEventListener('click', () => { setModel(b.dataset.model); history.replaceState(null, '', '#' + ({ '84': 'ti84', '30': 'ti30', 'xi': 'ti30xiis' })[MODEL]); }));
 
-load(); load30();
+/* ======================================================================
+   TI-30XIIS–style model ("Pioneer Calc 2-line")
+   ====================================================================== */
+const CX = 16;
+const XS = {
+  settings: { angle: 'DEGREE', notation: 'NORM', fix: -1 },
+  vars: {}, ans: 0, hist: [], ed: { t: [], c: 0 }, res: '', done: false, hidx: null,
+  mode: 'home', shift: null, hyp: false, menu: null, errS: null,
+  stat: { kind: 0, x: [], y: [], f: [] }, dataS: null, sv: null
+};
+const VARSX = ['A', 'B', 'C', 'D', 'E'];
+function ctxX(fn) {
+  const sv = { settings: S.settings, vars: S.vars, ans: S.ans };
+  S.settings = { sci: XS.settings.notation === 'SCI', eng: XS.settings.notation === 'ENG', fix: XS.settings.fix, angle: XS.settings.angle, diag: true, wiz: true, style30: true };
+  S.vars = XS.vars; S.ans = XS.ans;
+  try { return fn(); } finally { XS.vars = S.vars; S.settings = sv.settings; S.vars = sv.vars; S.ans = sv.ans; }
+}
+const DISPX = { '*': '×', '/': '÷', '⁻': '-', 'rand': 'RAND', 'randInt(': 'RANDI(', 'ᴇ': 'E', '⌋': '⌋', '►F◄►D': '►F◄►D', '►Ab/c◄►d/e': '►Ab/c◄►d/e', 'Ans': 'ANS' };
+const dtx = v => DISPX[v] ?? v;
+const SUP = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+
+/* fractions: a⌋b and w⌋n⌋d with whole-number parts */
+function fracPre(tk) {
+  const out = []; let i = 0;
+  const digits = () => { let s = ''; while (i < tk.length && /^[0-9]$/.test(tk[i])) s += tk[i++]; return s; };
+  while (i < tk.length) {
+    if (/^[0-9]$/.test(tk[i]) || tk[i] === '.') {
+      const start = i; const a = digits();
+      if (tk[i] === '⌋') {
+        i++; const b = digits(); if (!b || !a) err('SYNTAX');
+        if (tk[i] === '⌋') { i++; const c = digits(); if (!c) err('SYNTAX'); if (+c === 0) err('DIVIDE BY 0'); out.push('(', ...a, '+', ...b, '/', ...c, ')'); }
+        else { if (+b === 0) err('DIVIDE BY 0'); out.push('(', ...a, '/', ...b, ')'); }
+        if (tk[i] === '.' || tk[i] === '⌋') err('SYNTAX');
+        continue;
+      }
+      i = start; while (i < tk.length && (/^[0-9]$/.test(tk[i]) || tk[i] === '.')) out.push(tk[i++]);
+      continue;
+    }
+    if (tk[i] === '⌋') err('SYNTAX');
+    out.push(tk[i++]);
+  }
+  return out;
+}
+function fracTxt(v, mixed) {
+  const f = fracLim(v, 1000); if (!f) return null; const [n, d] = f; if (d === 1) return null;
+  const sg = n < 0 ? '-' : '', a = Math.abs(n);
+  if (mixed && a > d) return sg + Math.floor(a / d) + '⌋' + (a % d) + '⌋' + d;
+  return sg + a + '⌋' + d;
+}
+function numTxtX(v) {
+  for (let sig = 10; sig >= 1; sig--) {
+    let s = sig === 10 ? fmt(v) : fmt(v, sig).replace('⁻', '-');
+    const k = s.indexOf('ᴇ'); if (k >= 0) s = s.slice(0, k) + '×10' + [...s.slice(k + 1)].map(ch => SUP[ch] || ch).join('');
+    if (cellsOf(s).length <= CX) return s;
+  }
+  return fmt(v);
+}
+function showX(r, hasFrac) {
+  const v = plain(r);
+  if (isList(v)) err('DATA TYPE');
+  if (typeof v !== 'number') return String(v);
+  const conv = r && typeof r === 'object' ? r.conv : undefined;
+  const natural = hasFrac ? (fracTxt(v, true) || numTxtX(v)) : numTxtX(v);
+  if (conv === '►F◄►D') return hasFrac ? numTxtX(v) : (fracTxt(v, true) || numTxtX(v));
+  if (conv === '►Ab/c◄►d/e') { const mixedForm = fracTxt(v, true), imp = fracTxt(v, false); if (!imp) return numTxtX(v); return (hasFrac && mixedForm !== imp) ? imp : mixedForm; }
+  if (conv === '►DMS') return dmsForm(v).replace(/<[^>]+>/g, '');
+  if (conv === '►%') return numTxtX(v * 100) + '%';
+  return natural;
+}
+function evalX() {
+  let toks = XS.ed.t;
+  if (!toks.length) { if (!XS.hist.length) return; toks = XS.hist[XS.hist.length - 1].t.slice(); }
+  const hasFrac = toks.includes('⌋') || (toks.includes('Ans') && XS.lastFrac);
+  try {
+    const out = ctxX(() => { const r = execute(fracPre(toks)); return { r, txt: showX(r, hasFrac) }; });
+    XS.lastFrac = out.txt.includes('⌋');
+    const v = plain(out.r); if (typeof v === 'number') XS.ans = v;
+    XS.hist.push({ t: toks.slice(), r: out.txt }); if (XS.hist.length > 30) XS.hist.shift();
+    XS.ed = { t: toks.slice(), c: toks.length }; XS.res = out.txt; XS.done = true; XS.hidx = null;
+  } catch (e) {
+    if (!(e instanceof CalcError)) throw e;
+    XS.errS = { code: e.code, pos: e.pos }; XS.mode = 'error';
+  }
+}
+function insX(tok) {
+  const e = XS.ed;
+  if (XS.done) { XS.done = false; XS.hidx = null; XS.ed = { t: [], c: 0 }; if (ANSPRE.has(tok) || tok === '►F◄►D' || tok === '►Ab/c◄►d/e') XS.ed.t.push('Ans'), XS.ed.c = 1; }
+  else if (!e.t.length && (ANSPRE.has(tok) || tok === '►F◄►D' || tok === '►Ab/c◄►d/e')) { e.t.push('Ans'); e.c = 1; }
+  XS.ed.t.splice(XS.ed.c, 0, tok); XS.ed.c++;
+}
+
+/* horizontal menus (top line) */
+function menuX(title, opts, onPick, extra = {}) { XS.menu = { title, opts, onPick, sel: extra.sel || 0, val: extra.val || null }; XS.mode = 'menu'; }
+function openVarMenu(kind) {
+  const val = i => VARSX[i] + '=' + ctxX(() => numTxtX(XS.vars[VARSX[i]] ?? 0));
+  if (kind === 'memvar') menuX('', VARSX, i => { XS.mode = 'home'; insX(VARSX[i]); }, { val });
+  if (kind === 'sto') menuX('', VARSX, i => { XS.mode = 'home'; XS.ed.t.splice(XS.ed.c, 0, VARSX[i]); XS.ed.c++; }, { val });
+  if (kind === 'rcl') menuX('', VARSX, i => { XS.mode = 'home'; const v = XS.vars[VARSX[i]] ?? 0; String(+v.toPrecision(10)).replace('e', 'ᴇ').replace('+', '').split('').forEach(ch => insX(ch === '-' ? '⁻' : ch)); }, { val });
+}
+function confirmX(title, yes) { menuX(title, ['Y', 'N'], i => { XS.mode = 'home'; if (i === 0) yes(); }, { sel: 1 }); }
+function menuKeyX(id) {
+  const m = XS.menu;
+  if (id === 'left') m.sel = Math.max(0, m.sel - 1);
+  else if (id === 'right') m.sel = Math.min(m.opts.length - 1, m.sel + 1);
+  else if (id === 'eq') { XS.menu = null; m.onPick(m.sel); if (XS.mode === 'menu' && !XS.menu) XS.mode = 'home'; }
+  else if (id === 'clear') { XS.menu = null; XS.mode = 'home'; }
+}
+
+/* statistics */
+function statVals() {
+  const s = XS.stat; if (!s.x.length) err('STAT');
+  if (s.kind !== 2) {
+    const m = moments(s.x, s.f);
+    return [['n', m.n], ['x̄', m.mean], ['Sx', m.Sx], ['σx', m.sx], ['Σx', m.s], ['Σx²', m.s2]];
+  }
+  const f = s.x.map(() => 1), d = { x: s.x, y: s.y, f };
+  const mx = moments(s.x, f), my = moments(s.y, f); let sxy = 0; s.x.forEach((x, i) => sxy += x * s.y[i]);
+  let r = { a: null, b: null, r: null }; try { r = linFit(d); } catch (e) { /* need 2+ distinct x */ }
+  return [['n', mx.n], ['x̄', mx.mean], ['Sx', mx.Sx], ['σx', mx.sx], ['ȳ', my.mean], ['Sy', my.Sx], ['σy', my.sx], ['a', r.b], ['b', r.a], ['r', r.r], ['Σx', mx.s], ['Σx²', mx.s2], ['Σy', my.s], ['Σy²', my.s2], ['Σxy', sxy]];
+}
+function openData() {
+  if (!XS.stat.kind) XS.stat.kind = 1;
+  XS.dataS = { i: 0, field: 0, ed: null }; loadField(); XS.mode = 'data';
+}
+function fieldNames() { return XS.stat.kind === 2 ? ['X', 'Y'] : ['X', 'FRQ']; }
+function fieldArr(k) { const s = XS.stat; return XS.stat.kind === 2 ? (k === 0 ? s.x : s.y) : (k === 0 ? s.x : s.f); }
+function loadField() { const d = XS.dataS, arr = fieldArr(d.field); const v = arr[d.i]; const txt = v === undefined ? (d.field === 1 && XS.stat.kind !== 2 ? '1' : '') : String(+v.toPrecision(10)).replace('e', 'ᴇ').replace('+', '').replace(/-/g, '⁻'); d.ed = { t: [...txt], c: [...txt].length }; d.fresh = true; }
+function commitField() {
+  const d = XS.dataS, s = XS.stat, e = d.ed; if (!e) return;
+  if (!e.t.length) { if (d.i < s.x.length && d.field === 0) { s.x.splice(d.i, 1); s.y.splice(d.i, 1); s.f.splice(d.i, 1); } return; }
+  const v = ctxX(() => num(plain(execute(fracPre(e.t)))));
+  if (d.field === 1 && s.kind !== 2 && (!(v >= 0) || !isInt(v))) err('DOMAIN');
+  if (d.i >= s.x.length) { if (d.field !== 0) return; s.x.push(v); s.y.push(0); s.f.push(1); return; }
+  fieldArr(d.field)[d.i] = v;
+}
+function dataKeyX(id, s2) {
+  const d = XS.dataS;
+  const tok = keyTokX(id, s2);
+  if (tok !== null) { if (d.fresh) { d.ed = { t: [], c: 0 }; d.fresh = false; } d.ed.t.splice(d.ed.c, 0, tok); d.ed.c++; return; }
+  if (id === 'down') { commitField(); if (d.field === 0 && d.i >= XS.stat.x.length) return; if (d.field === 0) d.field = 1; else { d.field = 0; d.i = Math.min(d.i + 1, XS.stat.x.length); } loadField(); }
+  else if (id === 'up') { commitField(); if (d.field === 1) d.field = 0; else if (d.i > 0) { d.i--; d.field = 1; } loadField(); }
+  else if (id === 'eq' || (s2 && id === 'drg')) { commitField(); XS.dataS = null; XS.mode = 'home'; }
+  else if (id === 'clear') { d.ed = { t: [], c: 0 }; d.fresh = false; }
+  else if (id === 'del') { d.fresh = false; edDel(d.ed); }
+  else if (id === 'left') { d.fresh = false; if (d.ed.c > 0) d.ed.c--; }
+  else if (id === 'right') { d.fresh = false; if (d.ed.c < d.ed.t.length) d.ed.c++; }
+}
+
+/* keys */
+function keyTokX(id, s2) {
+  if (/^[0-9]$/.test(id) && !s2) return id;
+  const m = { dot: '.', neg: '⁻', add: '+', sub: '-', mul: '*', div: '/', lp: '(', rp: ')', comma: ',', abc: '⌋', ee: 'ᴇ' };
+  if (!s2 && m[id]) return m[id];
+  if (s2 && id === 'neg') return 'Ans';
+  return null;
+}
+function homeKeyX(id, s2) {
+  const e = XS.ed;
+  if (!s2) {
+    const simple = { '0': '0', '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9', dot: '.', neg: '⁻', add: '+', sub: '-', mul: '*', div: '/', lp: '(', rp: ')', comma: ',', abc: '⌋', ee: 'ᴇ', pi: 'π', inv: '⁻¹', sq: '²', pow: '^', log: 'log(', ln: 'ln(', sto: '→' };
+    if (simple[id]) { insX(simple[id]); if (id === 'sto') openVarMenu('sto'); return; }
+    switch (id) {
+      case 'sin': case 'cos': case 'tan': insX(id + (XS.hyp ? 'h' : '') + '('); XS.hyp = false; return;
+      case 'eq': return evalX();
+      case 'clear': XS.ed = { t: [], c: 0 }; XS.done = false; XS.hidx = null; XS.res = ''; return;
+      case 'del': if (XS.done) { XS.done = false; } edDel(e); return;
+      case 'left': XS.done = false; if (e.c > 0) e.c--; return;
+      case 'right': XS.done = false; if (e.c < e.t.length) e.c++; return;
+      case 'up': case 'down': {
+        if (!XS.hist.length) return;
+        let h = XS.hidx === null ? XS.hist.length : XS.hidx;
+        h += id === 'up' ? -1 : 1;
+        if (h < 0) h = 0;
+        if (h >= XS.hist.length) { XS.hidx = null; XS.ed = { t: [], c: 0 }; XS.res = ''; XS.done = false; return; }
+        XS.hidx = h; XS.ed = { t: XS.hist[h].t.slice(), c: XS.hist[h].t.length }; XS.res = XS.hist[h].r; XS.done = false; return;
+      }
+      case 'drg': { const A = ['DEGREE', 'RADIAN', 'GRAD']; return menuX('', ['DEG', 'RAD', 'GRD'], i => { XS.settings.angle = A[i]; }, { sel: A.indexOf(XS.settings.angle), cur: true }); }
+      case 'prb': { const T6 = [' nPr ', ' nCr ', '!', 'rand', 'randInt(']; return menuX('', ['nPr', 'nCr', '!', 'RAND', 'RANDI'], i => insX(T6[i])); }
+      case 'memvar': return openVarMenu('memvar');
+      case 'data': return openData();
+      case 'statvar': { const vals = ctxX(() => statVals()); XS.sv = { vals, sel: 0 }; XS.mode = 'sv'; return; }
+    }
+    return;
+  }
+  switch (id) {
+    case 'log': return insX('10^(');
+    case 'ln': return insX('e^(');
+    case 'sin': case 'cos': case 'tan': insX(id + (XS.hyp ? 'h' : '') + '⁻¹('); XS.hyp = false; return;
+    case 'pi': XS.hyp = !XS.hyp; return;
+    case 'sq': return insX('√(');
+    case 'pow': return insX('ˣ√');
+    case 'lp': return insX('%');
+    case 'abc': return insX('►F◄►D');
+    case 'inv': return insX('►Ab/c◄►d/e');
+    case 'neg': return insX('Ans');
+    case 'rp': { const T4 = ['R►Pr(', 'R►Pθ(', 'P►Rx(', 'P►Ry(']; return menuX('', ['R►Pr', 'R►Pθ', 'P►Rx', 'P►Ry'], i => insX(T4[i])); }
+    case 'prb': { const T5 = ['°', 'ʳ', 'ᵍ', '►DMS']; return menuX('', ['°', 'r', 'g', '►DMS'], i => insX(T5[i])); }
+    case 'ee': { return menuX('', ['F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], i => { XS.settings.fix = i - 1; }, { sel: XS.settings.fix + 1, cur: true }); }
+    case 'comma': { const N3 = ['NORM', 'SCI', 'ENG']; return menuX('', ['FLO', 'SCI', 'ENG'], i => { XS.settings.notation = N3[i]; }, { sel: N3.indexOf(XS.settings.notation), cur: true }); }
+    case 'sto': return openVarMenu('rcl');
+    case 'memvar': return confirmX('CLRVAR:', () => { XS.vars = {}; });
+    case 'data': return menuX('', ['1-VAR', '2-VAR', 'CLRDATA'], i => { if (i === 2) { XS.stat.x = []; XS.stat.y = []; XS.stat.f = []; } else { if (XS.stat.kind && XS.stat.kind !== i + 1) { XS.stat.x = []; XS.stat.y = []; XS.stat.f = []; } XS.stat.kind = i + 1; } }, { sel: Math.max(0, XS.stat.kind - 1) });
+    case 'statvar': return confirmX('EXIT ST:', () => { XS.stat.kind = 0; });
+    case '0': return confirmX('RESET:', () => resetX());
+    case 'drg': return notAvailX('DRG►');
+    case 'div': return notAvailX('K (constant)');
+    case 'left': e.c = 0; XS.done = false; return;
+    case 'right': e.c = e.t.length; XS.done = false; return;
+  }
+}
+function notAvailX(label) { XS.errS = { code: label, na: true }; XS.mode = 'error'; }
+function resetX() { XS.settings = { angle: 'DEGREE', notation: 'NORM', fix: -1 }; XS.vars = {}; XS.ans = 0; XS.hist = []; XS.ed = { t: [], c: 0 }; XS.res = ''; XS.done = false; XS.stat = { kind: 0, x: [], y: [], f: [] }; }
+function pressX(id) {
+  if (XS.mode === 'off') { if (id === 'on') { XS.mode = 'home'; XS.shift = null; } renderX(); return; }
+  if (id === '2nd') { XS.shift = XS.shift ? null : '2nd'; renderX(); return; }
+  const s2 = XS.shift === '2nd'; XS.shift = null;
+  try {
+    if (s2 && id === 'on') { XS.mode = 'off'; }
+    else if (id === 'on') { /* nothing */ }
+    else if (XS.mode === 'error') { XS.errS = null; XS.mode = 'home'; }
+    else if (XS.mode === 'menu') menuKeyX(id);
+    else if (XS.mode === 'data') dataKeyX(id, s2);
+    else if (XS.mode === 'sv') {
+      const sv = XS.sv;
+      if (id === 'left') sv.sel = Math.max(0, sv.sel - 1);
+      else if (id === 'right') sv.sel = Math.min(sv.vals.length - 1, sv.sel + 1);
+      else if (id === 'eq') { const v = sv.vals[sv.sel][1]; XS.mode = 'home'; XS.sv = null; if (typeof v === 'number') String(+v.toPrecision(10)).replace('e', 'ᴇ').replace('+', '').split('').forEach(ch => insX(ch === '-' ? '⁻' : ch)); }
+      else { XS.mode = 'home'; XS.sv = null; if (id !== 'clear') homeKeyX(id, s2); }
+    }
+    else homeKeyX(id, s2);
+  } catch (e) {
+    if (!(e instanceof CalcError)) throw e;
+    XS.errS = { code: e.code }; XS.mode = 'error';
+  }
+  renderX(); saveX();
+}
+
+/* rendering */
+const scrX = document.getElementById('scrX'), lcdX = document.getElementById('lcdX');
+function curX(base) { return XS.shift === '2nd' ? { ch: '↑', ks: true } : { ch: base || ' ', k: true }; }
+function edCellsX(e, active) {
+  const cells = []; let curIdx = -1;
+  e.t.forEach((t, i) => { const cs = cellsOf(dtx(t)); if (active && i === e.c) { cs[0] = curX(cs[0].ch); curIdx = cells.length; } cells.push(...cs); });
+  if (active && e.c >= e.t.length) { curIdx = cells.length; cells.push(curX(' ')); }
+  if (cells.length > CX) { const start = Math.max(0, Math.min(curIdx < 0 ? cells.length - CX : curIdx - CX + 2, cells.length - CX)); return cells.slice(start, start + CX); }
+  return cells;
+}
+const rightX = s => { const c = cellsOf(s); return Array(Math.max(0, CX - c.length)).fill(0).map(() => ({ ch: ' ' })).concat(c.slice(0, CX)); };
+function optRow(opts, sel, cur, curSel) {
+  const cells = []; let selStart = 0, selEnd = 0;
+  opts.forEach((o, i) => { if (i) cells.push({ ch: ' ' }); if (i === sel) selStart = cells.length; const cs = cellsOf(o, cur && i === curSel ? { i: true } : null); if (i === sel) cs.forEach((c, j) => { cs[j] = { ...c, u: true }; }); cells.push(...cs); if (i === sel) selEnd = cells.length; });
+  if (cells.length <= CX) return cells;
+  const start = Math.max(0, Math.min(selEnd - CX, cells.length - CX)); return cells.slice(Math.min(start, selStart), Math.min(start, selStart) + CX);
+}
+function renderX() {
+  const st = XS.settings;
+  document.getElementById('stX').textContent = { DEGREE: 'DEG', RADIAN: 'RAD', GRAD: 'GRD' }[st.angle] + (st.notation !== 'NORM' ? ' ' + st.notation : '') + (st.fix >= 0 ? ' FIX' : '') + (XS.stat.kind ? ' STAT' : '') + (XS.hist.length && XS.mode === 'home' ? ' ▲' : '');
+  const ind = document.getElementById('indX'); ind.textContent = (XS.hyp ? 'HYP ' : '') + (XS.shift === '2nd' ? '2ND' : ''); ind.className = 'ind' + (XS.shift === '2nd' ? ' s2' : '');
+  lcdX.classList.toggle('off', XS.mode === 'off');
+  let r1 = [], r2 = [];
+  switch (XS.mode) {
+    case 'home': r1 = edCellsX(XS.ed, !XS.done); if (XS.done && !r1.length) r1 = []; r2 = rightX(XS.res); break;
+    case 'menu': {
+      const m = XS.menu; const head = m.title ? cellsOf(m.title) : [];
+      const cur = m.opts.length <= 11 && ['DEG', 'FLO', 'F'].includes(m.opts[0]);
+      const curSel = cur ? (m.opts[0] === 'DEG' ? ['DEGREE', 'RADIAN', 'GRAD'].indexOf(XS.settings.angle) : m.opts[0] === 'FLO' ? ['NORM', 'SCI', 'ENG'].indexOf(XS.settings.notation) : XS.settings.fix + 1) : -1;
+      r1 = head.concat(optRow(m.opts, m.sel, cur, curSel)).slice(0, CX);
+      r2 = m.val ? rightX(m.val(m.sel)) : edCellsX(XS.ed, false); break;
+    }
+    case 'data': {
+      const d = XS.dataS, names = fieldNames(), n = d.i + 1;
+      const other = d.field === 0 ? 1 : 0;
+      const lab = k => names[k] + n + '=';
+      const focusRow = cellsOf(lab(d.field)).concat(edCellsX(d.ed, true)).slice(0, CX);
+      const ov = fieldArr(other)[d.i]; const otherRow = cellsOf(lab(other) + (ov === undefined ? (other === 1 && XS.stat.kind !== 2 ? '1' : '') : ctxX(() => numTxtX(ov))));
+      if (d.field === 0) { r1 = focusRow; r2 = otherRow; } else { r1 = otherRow; r2 = focusRow; }
+      break;
+    }
+    case 'sv': {
+      const sv = XS.sv; r1 = optRow(sv.vals.map(v => v[0]), sv.sel, false, -1);
+      const v = sv.vals[sv.sel][1]; r2 = rightX(v === null ? '' : ctxX(() => numTxtX(v))); break;
+    }
+    case 'error': {
+      const e = XS.errS;
+      if (e.na) { r1 = cellsOf(e.code); r2 = cellsOf('not included'); }
+      else { r1 = cellsOf((e.code.length > 9 ? e.code : e.code + ' ERROR').slice(0, CX)); r2 = cellsOf('press any key'); }
+      break;
+    }
+  }
+  scrX.innerHTML = XS.mode === 'off' ? '' : '<div class="g30">' + rowHTML(r1, CX) + rowHTML(r2, CX) + '</div>';
+}
+
+/* persistence */
+const STOREX = 'pioneer-calcxiis-v1';
+function saveX() { try { localStorage.setItem(STOREX, JSON.stringify({ settings: XS.settings, vars: XS.vars, ans: XS.ans, hist: XS.hist.slice(-20), stat: XS.stat })); } catch (e) { /* ignore */ } }
+function loadX() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STOREX) || 'null'); if (!d) return;
+    Object.assign(XS.settings, d.settings || {}); XS.vars = d.vars || {}; XS.ans = d.ans ?? 0;
+    XS.hist = isList(d.hist) ? d.hist.filter(h => h && isList(h.t)) : [];
+    if (d.stat && isList(d.stat.x)) XS.stat = { kind: d.stat.kind || 0, x: d.stat.x, y: d.stat.y || [], f: d.stat.f || [] };
+  } catch (e) { /* ignore */ }
+}
+
+/* keypad */
+const LAYOUTX = [
+  [['2nd', '2nd', '', 'second'], ['drg', 'DRG', 'DRG►'], ['del', 'DEL', 'INS'], 'DPAD'],
+  [['log', 'LOG', '10ˣ'], ['prb', 'PRB', 'ANGLE'], ['abc', 'A b/c', 'F◄►D', 'small']],
+  [['ln', 'LN', 'eˣ'], ['memvar', 'MEMVAR', 'CLRVAR', 'tiny'], ['data', 'DATA', 'STAT'], ['statvar', 'STATVAR', 'EXIT ST', 'tiny'], ['clear', 'CLEAR', '', 'small']],
+  [['pi', 'π', 'HYP'], ['sin', 'SIN', 'SIN⁻¹'], ['cos', 'COS', 'COS⁻¹'], ['tan', 'TAN', 'TAN⁻¹'], ['pow', '^', 'ˣ√', 'op']],
+  [['inv', 'x⁻¹', 'Ab/c◄►d/e'], ['ee', 'EE', 'FIX'], ['lp', '(', '%'], ['rp', ')', 'R◄►P'], ['div', '÷', 'K', 'op']],
+  [['sq', 'x²', '√'], ['7', '7', '', 'num'], ['8', '8', '', 'num'], ['9', '9', '', 'num'], ['mul', '×', '', 'op']],
+  [['comma', ',', 'SCI/ENG'], ['4', '4', '', 'num'], ['5', '5', '', 'num'], ['6', '6', '', 'num'], ['sub', '−', '', 'op']],
+  [['sto', 'STO▸', 'RCL', 'small'], ['1', '1', '', 'num'], ['2', '2', '', 'num'], ['3', '3', '', 'num'], ['add', '+', '', 'op']],
+  [['on', 'ON', 'OFF'], ['0', '0', 'RESET', 'num'], ['dot', '.', '', 'num'], ['neg', '(−)', 'ANS', 'num'], ['eq', '=', '', 'op enter']]
+];
+const padX = document.getElementById('padX'), keyButtonsX = {};
+LAYOUTX.forEach(row => row.forEach(k => {
+  if (k === 'DPAD') {
+    const d = document.createElement('div'); d.className = 'dpad';
+    d.innerHTML = '<div class="ring"></div>' + [['up', '▲'], ['left', '◀'], ['right', '▶'], ['down', '▼']].map(([id, s]) => '<button type="button" class="' + id + '" data-k="' + id + '" aria-label="' + id + ' arrow">' + s + '</button>').join('');
+    padX.appendChild(d); return;
+  }
+  const [id, main, l2, cls] = k;
+  const el = document.createElement('div'); el.className = 'k ' + (cls || '');
+  el.innerHTML = '<div class="lab"><span class="l2">' + esc(l2) + '</span></div><button type="button" data-k="' + id + '" aria-label="' + esc(main) + '">' + esc(main) + '</button>';
+  padX.appendChild(el);
+}));
+padX.querySelectorAll('button[data-k]').forEach(b => { keyButtonsX[b.dataset.k] = b; });
+padX.addEventListener('click', e => { const b = e.target.closest('button[data-k]'); if (!b) return; pressX(b.dataset.k); });
+
+load(); load30(); loadX();
 (() => { let m = '84'; try { m = localStorage.getItem('pioneer-model') || '84'; } catch (e) { /* ignore */ }
-  if (location.hash === '#ti30') m = '30'; else if (location.hash === '#ti84') m = '84'; setModel(m); })();
+  if (location.hash === '#ti30') m = '30'; else if (location.hash === '#ti84') m = '84'; else if (location.hash === '#ti30xiis') m = 'xi'; setModel(m); })();
 
 /* test hook (used for automated checks; harmless for students) */
-window.__pioneer = { S, T: TS, press, press30, setModel, run: s => { const r = execute(tokenizeText(s)); return r && r.lines ? r.lines : show(r); }, tokenizeText, fmt, TESTS, render };
+window.__pioneer = { S, T: TS, XS: () => XS, pressX: id => pressX(id), press, press30, setModel, run: s => { const r = execute(tokenizeText(s)); return r && r.lines ? r.lines : show(r); }, tokenizeText, fmt, TESTS, render };
 })();
 </script>
 </body>
